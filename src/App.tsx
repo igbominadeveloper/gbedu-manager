@@ -5,8 +5,12 @@ import Homepage from './pages/Home/Home';
 import MyLibrary from './pages/MyLibrary/MyLibrary';
 import NotFoundPage from './pages/NotFound';
 
+import NavBar from './components/NavBar/NavBar';
+
 const App = () => (
   <Suspense fallback={<div>Loading....</div>}>
+    <NavBar />
+
     <Switch>
       <Route exact path="/" component={Homepage} />
       <Route exact path="/my-library" component={MyLibrary} />
