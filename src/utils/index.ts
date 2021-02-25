@@ -9,7 +9,7 @@ export const transformedSongs = (songs: Array<RawSong>): Array<SongInterface> =>
     id: song.id,
   }));
 
-export const truncate = (word: string, maxLength: number = 18): string => {
+export const truncate = (word: string, maxLength: number = 15): string => {
   if (word.length >= maxLength) {
     return `${word.substring(0, maxLength)} ...`;
   }
