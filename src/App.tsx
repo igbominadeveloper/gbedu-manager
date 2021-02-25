@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Homepage from './pages/Home';
-import MyLibrary from './pages/MyLibrary';
+import Homepage from './pages/Home/Home';
+import MyLibrary from './pages/MyLibrary/MyLibrary';
 import NotFoundPage from './pages/NotFound';
 
 const App = () => (
