@@ -1,0 +1,40 @@
+.new-release {
+  box-shadow: var(--box-shadow);
+
+  padding: 1rem;
+}
+
+.songs-portrait {
+  margin: 2rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.songs-landscape {
+  margin: 3rem 0;
+}
+
+.search-results {
+  margin: 4rem 0;
+  padding: 1rem;
+
+  box-shadow: var(--box-shadow);
+
+  min-height: 50rem;
+
+  &__headings {
+    display: flex;
+
+    margin: 2rem 1rem;
+
+    font-size: var(--font-sub-title);
+    font-weight: 600;
+
+    &--title,
+    &--album {
+      width: 40.3rem;
+    }
+  }
+}
