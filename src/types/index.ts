@@ -51,11 +51,13 @@ export enum Status {
 
 export interface RequestStatus {
   getUserProfile: Status;
+  searchSongs: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
   error: string;
   userProfile: SpotifyUser;
+  searchResult: Array<SongInterface>;
 }
 
 export interface ReduxAction {

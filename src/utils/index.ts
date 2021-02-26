@@ -1,8 +1,8 @@
 import Qs from 'qs';
 
-import { RawSong, SongInterface } from '../types';
+import { RawSong, SongInterface, SpotifyUser } from '../types';
 
-export const transformedSongs = (songs: Array<RawSong>): Array<SongInterface> =>
+export const transformSongs = (songs: Array<RawSong>): Array<SongInterface> =>
   songs.map((song: RawSong) => ({
     album: song.album.name,
     duration: song.duration_ms,
@@ -40,3 +40,7 @@ export const getTokenFromResponse = (
     expires_in: urlTransformed.expires_in,
   };
 };
+
+export const hydrateStringifiedUserObject = (
+  userObjectString: string
+): SpotifyUser => JSON.parse(userObjectString);
