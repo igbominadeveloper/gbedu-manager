@@ -30,12 +30,13 @@ export const minuteAndSeconds = (duration: number): string => {
   return `${minutes}:${Number(seconds) < 10 ? 0 + '' + seconds : seconds}`;
 };
 
-export const getTokenFromResponse = (uri: string): string => {
-  const urlTransformed = Qs.parse(uri.split('#')[1]);
+export const getTokenFromResponse = (
+  uri: string
+): { access_token: string; expires_in: string } => {
+  const urlTransformed: any = Qs.parse(uri.split('#')[1]);
 
-  if (typeof urlTransformed.access_token === 'string') {
-    return urlTransformed.access_token || '';
-  }
-
-  return '';
+  return {
+    access_token: urlTransformed.access_token,
+    expires_in: urlTransformed.expires_in,
+  };
 };
