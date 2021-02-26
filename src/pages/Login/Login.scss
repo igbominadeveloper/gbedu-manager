@@ -26,4 +26,9 @@
   align-items: center;
 
   text-decoration: none;
+
+  &:hover {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
 }

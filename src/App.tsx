@@ -10,6 +10,8 @@ import Login from './pages/Login/Login';
 //Components
 import NavBar from './components/NavBar/NavBar';
 
+import { getTokenFromResponse } from './utils';
+
 const App = () => {
   const routeMatch = useLocation();
   const [showNavBar, setShowNavBar] = useState(true);
@@ -19,6 +21,20 @@ const App = () => {
       setShowNavBar(false);
     }
   }, [routeMatch.pathname]);
+
+  useEffect(() => {
+    if (routeMatch.hash) {
+      console.log(routeMatch.hash);
+
+      const token = getTokenFromResponse(routeMatch.hash);
+
+      localStorage.setItem('token', token);
+
+      // make the request to get the user profile
+      // store the user profile in localstorage and redux
+      // redirect the app to the homepage
+    }
+  }, [routeMatch.hash]);
 
   return (
     <Suspense fallback={<div>Loading....</div>}>

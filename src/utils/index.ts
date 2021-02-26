@@ -1,3 +1,5 @@
+import Qs from 'qs';
+
 import { RawSong, SongInterface } from '../types';
 
 export const transformedSongs = (songs: Array<RawSong>): Array<SongInterface> =>
@@ -26,4 +28,14 @@ export const minuteAndSeconds = (duration: number): string => {
   const seconds = Number(Number(`0.${durationString[1]}`) * 60).toFixed(0);
 
   return `${minutes}:${Number(seconds) < 10 ? 0 + '' + seconds : seconds}`;
+};
+
+export const getTokenFromResponse = (uri: string): string => {
+  const urlTransformed = Qs.parse(uri.split('#')[1]);
+
+  if (typeof urlTransformed.access_token === 'string') {
+    return urlTransformed.access_token || '';
+  }
+
+  return '';
 };
