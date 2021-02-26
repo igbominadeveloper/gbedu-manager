@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 // Pages
 import Homepage from './pages/Home/Home';
@@ -10,9 +11,14 @@ import Login from './pages/Login/Login';
 //Components
 import NavBar from './components/NavBar/NavBar';
 import Authentication from './components/Authentication/Authentication';
+import { hydrateStringifiedUserObject } from './utils';
+import { getUserProfileSuccess } from './store/actions';
 
 const App = () => {
   const routeMatch = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const [showNavBar, setShowNavBar] = useState(true);
 
   useEffect(() => {
@@ -28,6 +34,25 @@ const App = () => {
 
     return () => setShowNavBar(true);
   }, [routeMatch.pathname]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    let authenticatedUser = localStorage.getItem('auth-user');
+
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+
+    if (authenticatedUser) {
+      const hydratedUserObject = hydrateStringifiedUserObject(
+        authenticatedUser || ''
+      );
+
+      dispatch(getUserProfileSuccess(hydratedUserObject));
+      return;
+    }
+  }, [dispatch, history]);
 
   return (
     <Suspense fallback={<div>Loading....</div>}>
