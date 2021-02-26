@@ -16,7 +16,7 @@ import {
 } from '../../store/actions';
 import * as Services from '../../services';
 
-import { transformSongs } from '../../utils';
+import { transformSearchResult } from '../../utils';
 
 import './NavBar.scss';
 
@@ -45,7 +45,9 @@ const NavBar = () => {
       dispatch(searchSongsRequestLoading());
       const response = await Services.searchSongs(searchParameter);
 
-      dispatch(searchSongsSuccess(transformSongs(response.data.tracks.items)));
+      dispatch(
+        searchSongsSuccess(transformSearchResult(response.data.tracks.items))
+      );
     } catch (error) {
       dispatch(searchSongsError(error));
     }

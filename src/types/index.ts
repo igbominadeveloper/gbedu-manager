@@ -23,12 +23,18 @@ type SpotifyImage = {
   width: number;
 };
 
+export interface Album {
+  artists: Array<Artist>;
+  images: Array<SpotifyImage>;
+  name: string;
+  release_date: string;
+  total_tracks: number;
+  uri: string;
+  id: string;
+}
+
 export interface RawSong {
-  album: {
-    artists: Array<Artist>;
-    images: Array<SpotifyImage>;
-    name: string;
-  };
+  album: Album;
   artists: Array<Artist>;
   duration_ms: number;
   id: string;
@@ -52,12 +58,14 @@ export enum Status {
 export interface RequestStatus {
   getUserProfile: Status;
   searchSongs: Status;
+  getNewReleases: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
   error: string;
   userProfile: SpotifyUser;
   searchResult: Array<SongInterface>;
+  newReleases: Array<Album>;
 }
 
 export interface ReduxAction {

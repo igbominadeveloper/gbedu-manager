@@ -2,7 +2,9 @@ import Qs from 'qs';
 
 import { RawSong, SongInterface, SpotifyUser } from '../types';
 
-export const transformSongs = (songs: Array<RawSong>): Array<SongInterface> =>
+export const transformSearchResult = (
+  songs: Array<RawSong>
+): Array<SongInterface> =>
   songs.map((song: RawSong) => ({
     album: song.album.name,
     duration: song.duration_ms,
@@ -11,7 +13,7 @@ export const transformSongs = (songs: Array<RawSong>): Array<SongInterface> =>
     id: song.id,
   }));
 
-export const truncate = (word: string, maxLength: number = 15): string => {
+export const truncate = (word: string, maxLength: number = 13): string => {
   if (word.length >= maxLength) {
     return `${word.substring(0, maxLength)} ...`;
   }

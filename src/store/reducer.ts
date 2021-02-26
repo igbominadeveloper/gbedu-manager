@@ -7,9 +7,11 @@ export const initialState: ReduxState = {
   requestStatus: {
     getUserProfile: Status.IDLE,
     searchSongs: Status.IDLE,
+    getNewReleases: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
+  newReleases: [],
 };
 
 const reducer = (
@@ -76,7 +78,7 @@ const reducer = (
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          searchSongs: Status.SUCCESS,
+          searchSongs: Status.ERROR,
         },
       };
     }
@@ -84,6 +86,37 @@ const reducer = (
     case Actions.LOGOUT_USER: {
       return {
         ...initialState,
+      };
+    }
+
+    case Actions.GET_NEW_RELEASES_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getNewReleases: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.GET_NEW_RELEASES_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getNewReleases: Status.SUCCESS,
+        },
+        newReleases: action.payload,
+      };
+    }
+
+    case Actions.GET_NEW_RELEASES_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getNewReleases: Status.ERROR,
+        },
       };
     }
 
