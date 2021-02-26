@@ -6,8 +6,10 @@ export const initialState: ReduxState = {
   error: '',
   requestStatus: {
     getUserProfile: Status.IDLE,
+    searchSongs: Status.IDLE,
   },
   userProfile: { ...DummyUser },
+  searchResult: [],
 };
 
 const reducer = (
@@ -19,6 +21,7 @@ const reducer = (
       return {
         ...state,
         requestStatus: {
+          ...state.requestStatus,
           getUserProfile: Status.LOADING,
         },
         userProfile: { ...DummyUser },
@@ -29,6 +32,7 @@ const reducer = (
       return {
         ...state,
         requestStatus: {
+          ...state.requestStatus,
           getUserProfile: Status.SUCCESS,
         },
         userProfile: action.payload,
@@ -39,9 +43,47 @@ const reducer = (
       return {
         ...state,
         requestStatus: {
+          ...state.requestStatus,
           getUserProfile: Status.ERROR,
         },
         userProfile: { ...DummyUser },
+      };
+    }
+
+    case Actions.SEARCH_FOR_SONGS_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          searchSongs: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.SEARCH_FOR_SONGS_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          searchSongs: Status.SUCCESS,
+        },
+        searchResult: action.payload,
+      };
+    }
+
+    case Actions.SEARCH_FOR_SONGS_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          searchSongs: Status.SUCCESS,
+        },
+      };
+    }
+
+    case Actions.LOGOUT_USER: {
+      return {
+        ...initialState,
       };
     }
 

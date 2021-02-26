@@ -31,7 +31,9 @@ const Authentication: FunctionComponent = () => {
         try {
           dispatch(getUserProfileRequestLoading());
           const response = await Services.getUserProfile();
-          dispatch(getUserProfileSuccess(response.data));
+          const userProfile = response.data;
+          dispatch(getUserProfileSuccess(userProfile));
+          localStorage.setItem('auth-user', JSON.stringify(userProfile));
         } catch (error) {
           dispatch(getUserProfileError(error));
         }

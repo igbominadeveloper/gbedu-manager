@@ -5,7 +5,7 @@ import Mocks from '../../tests/mocks.json';
 
 import Song from '../../components/Song/Song';
 
-import { transformedSongs } from '../../utils';
+import { transformSongs } from '../../utils';
 
 const MyLibrary: FunctionComponent = () => {
   return (
@@ -13,7 +13,7 @@ const MyLibrary: FunctionComponent = () => {
       <div className="page-title">My Library</div>
 
       <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
-        {transformedSongs(Mocks.tracks.items).map((song: SongInterface) => (
+        {transformSongs(Mocks.tracks.items).map((song: SongInterface) => (
           <Song key={song.id} song={song} layout={SongLayout.PORTRAIT} />
         ))}
       </div>
