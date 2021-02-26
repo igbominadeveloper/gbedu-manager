@@ -1,3 +1,5 @@
+import { FunctionComponent } from 'react';
+
 import { SongInterface, SongLayout } from '../../types';
 import Mocks from '../../tests/mocks.json';
 
@@ -7,7 +9,7 @@ import { transformedSongs } from '../../utils';
 
 import './Home.scss';
 
-const Home: React.FunctionComponent = () => {
+const Home: FunctionComponent = () => {
   return (
     <div className="home page">
       <section className="new-release">

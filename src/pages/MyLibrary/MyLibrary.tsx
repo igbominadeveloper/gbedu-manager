@@ -1,3 +1,5 @@
+import { FunctionComponent } from 'react';
+
 import { SongInterface, SongLayout } from '../../types';
 import Mocks from '../../tests/mocks.json';
 
@@ -5,7 +7,7 @@ import Song from '../../components/Song/Song';
 
 import { transformedSongs } from '../../utils';
 
-function MyLibrary() {
+const MyLibrary: FunctionComponent = () => {
   return (
     <div className="page">
       <div className="page-title">My Library</div>
@@ -17,6 +19,6 @@ function MyLibrary() {
       </div>
     </div>
   );
-}
+};
 
 export default MyLibrary;
