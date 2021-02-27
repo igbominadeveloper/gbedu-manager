@@ -1,7 +1,12 @@
 .my-library {
   margin: 2rem;
+
   display: flex;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 770px) {
+    justify-content: center;
+  }
 
   &__empty {
     margin: 1rem auto;
@@ -25,12 +30,11 @@
 }
 
 .export-to-spotify {
-  padding: 0.5rem 4rem;
+  padding: 0.5rem 2rem;
   margin: 0 4rem;
+  height: 4rem;
 
   font-size: var(--font-sub-title);
-  background: var(--color-black);
-  color: var(--color-white);
 
   border: 1px solid var(--color-black);
 
@@ -43,11 +47,14 @@
 
   &:hover {
     background: var(--color-white);
-    color: var(--color-black);
   }
 
   &__image {
     width: 2rem;
     margin-right: 1rem;
+  }
+
+  &__loader {
+    margin-left: 1rem;
   }
 }

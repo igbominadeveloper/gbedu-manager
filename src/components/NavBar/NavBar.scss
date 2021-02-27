@@ -14,14 +14,20 @@
   }
 
   &__link {
-    margin: 0 4rem;
+    margin: 0 3rem;
+    width: 8rem;
+
+    align-self: stretch;
+
+    display: flex;
+    align-items: center;
   }
 
   &__search {
     display: flex;
     align-items: center;
 
-    width: 40%;
+    width: 100%;
     border-radius: 4px;
     border: 2px solid var(--color-grey);
     padding: 0 1rem;
@@ -66,6 +72,54 @@
       margin-left: 1rem;
 
       font-weight: 600;
+    }
+  }
+
+  &__actions {
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 1024px) {
+    &__actions {
+      width: 70rem;
+    }
+
+    &__search {
+      width: 40rem;
+      margin-left: auto;
+    }
+
+    &__logout {
+      margin-left: 3rem;
+    }
+  }
+
+  @media screen and (max-width: 680px) {
+    flex-direction: column;
+    align-items: center;
+
+    padding: 1rem;
+
+    &__logout {
+      margin: 0 2rem;
+    }
+
+    &__search {
+      margin: 2rem 0 1rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__logout {
+      margin: 0 1rem 0 3rem;
+      width: 3rem;
+
+      display: flex;
+      align-items: center;
     }
   }
 }

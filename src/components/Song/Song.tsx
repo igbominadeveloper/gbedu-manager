@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Loader from '../Loader/Loader';
+
 import {
   manageLibraryRequestLoading,
   manageLibrarySuccess,
@@ -13,7 +15,7 @@ import {
 
 import * as Services from '../../services';
 
-import { ReduxState, SongInterface, SongLayout } from '../../types';
+import { ReduxState, SongInterface, SongLayout, Status } from '../../types';
 
 import { minuteAndSeconds, truncate } from '../../utils';
 
@@ -38,6 +40,12 @@ const Song: React.FunctionComponent<SongProps> = ({
 
     return songExists ? true : false;
   });
+
+  const albumTracksAreBeingFetched = useSelector(
+    (state: ReduxState) =>
+      state.requestStatus.getAlbumTracks === Status.LOADING &&
+      state.activeAlbum.id === song.id
+  );
 
   const manageLibrary = useCallback(
     async (song: SongInterface) => {
@@ -89,7 +97,7 @@ const Song: React.FunctionComponent<SongProps> = ({
   return layout === SongLayout.PORTRAIT ? (
     <div className="song-portrait">
       <div className="song-portrait__thumbnail">
-        <img src={song.thumbnail} alt={`${song.title}`} />
+        <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
       </div>
       <div className="song-portrait__title">{truncate(song.title)}</div>
 
@@ -98,14 +106,14 @@ const Song: React.FunctionComponent<SongProps> = ({
           className="song-portrait__action pointer"
           onClick={() => getAlbumTracks(song)}
         >
-          View Tracks
+          {albumTracksAreBeingFetched ? <Loader width={2} /> : 'View Tracks'}
         </div>
       ) : (
         <div
           className="song-portrait__action pointer"
           onClick={() => manageLibrary(song)}
         >
-          {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
+          {songHasBeenAddedToLibrary ? 'Remove' : 'Add'}
         </div>
       )}
     </div>
@@ -113,7 +121,7 @@ const Song: React.FunctionComponent<SongProps> = ({
     <div className="song-landscape">
       <div className="song-landscape__art-and-title">
         <div className="song-landscape__thumbnail">
-          <img src={song.thumbnail} alt={`${song.title}`} />
+          <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
         </div>
         <div className="song-landscape__title">{song.title}</div>
       </div>
@@ -125,7 +133,7 @@ const Song: React.FunctionComponent<SongProps> = ({
         className="song-landscape__action pointer"
         onClick={() => manageLibrary(song)}
       >
-        {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
+        {songHasBeenAddedToLibrary ? 'Remove' : 'Add'}
       </div>
     </div>
   );
