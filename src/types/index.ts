@@ -60,6 +60,7 @@ export interface RequestStatus {
   searchSongs: Status;
   getNewReleases: Status;
   getUserLastSearchResult: Status;
+  addToLibrary: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
@@ -68,6 +69,7 @@ export interface ReduxState {
   searchResult: Array<SongInterface>;
   newReleases: Array<Album>;
   searchQuery: string;
+  userLibray: Array<SongInterface>;
 }
 
 export interface ReduxAction {

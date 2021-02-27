@@ -37,3 +37,14 @@ export const getUserLastSearchResult = () => {
     method: 'get',
   }).then((response) => response.json());
 };
+
+export const addSongToUserLibrary = (songs: Array<SongInterface>) => {
+  const userProfileString = localStorage.getItem('auth-user');
+
+  const userProfile = convertUserStringToJson(userProfileString || '');
+
+  return fetch(`${firebaseUrl}/${userProfile.id}/favourites.json`, {
+    method: 'put',
+    body: JSON.stringify(songs),
+  });
+};
