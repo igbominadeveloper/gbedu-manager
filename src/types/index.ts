@@ -59,6 +59,7 @@ export interface RequestStatus {
   getUserProfile: Status;
   searchSongs: Status;
   getNewReleases: Status;
+  getUserLastSearchResult: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
@@ -66,6 +67,7 @@ export interface ReduxState {
   userProfile: SpotifyUser;
   searchResult: Array<SongInterface>;
   newReleases: Array<Album>;
+  searchQuery: string;
 }
 
 export interface ReduxAction {

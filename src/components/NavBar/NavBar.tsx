@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,6 +9,9 @@ import Avatar from '../../assets/avatar.svg';
 import { ReduxState } from '../../types';
 
 import {
+  getUserLastSearchResultError,
+  getUserLastSearchResultRequestLoading,
+  getUserLastSearchResultSuccess,
   logoutUser,
   searchSongsError,
   searchSongsRequestLoading,
@@ -23,12 +26,36 @@ import './NavBar.scss';
 const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const userSearchQuery = useSelector((state: ReduxState) => state.searchQuery);
+
+  const [searchQuery, setSearchQuery] = useState(userSearchQuery);
 
   const userProfile = useSelector((state: ReduxState) => state.userProfile);
 
   const userProfileImage = userProfile.images[0]?.url;
 
   const goToHomePage = () => history.push('/');
+  const goToLoginPage = () => history.push('/login');
+
+  const getUserLastSearchResult = useCallback(async () => {
+    try {
+      dispatch(getUserLastSearchResultRequestLoading());
+      const response = await Services.getUserLastSearchResult();
+
+      dispatch(
+        getUserLastSearchResultSuccess({
+          searchQuery: response.searchQuery,
+          searchResult: response.searchResult,
+        })
+      );
+
+      setSearchQuery(response.searchQuery);
+    } catch (error) {
+      console.log(error);
+
+      dispatch(getUserLastSearchResultError(error.message));
+    }
+  }, [dispatch]);
 
   useEffect(() => {
     const expirationTime = localStorage.getItem('expires_in');
@@ -36,28 +63,46 @@ const NavBar = () => {
     if (!expirationTime) return;
 
     if (new Date().getTime() > Number(expirationTime)) {
-      goToHomePage();
+      goToLoginPage();
     }
   });
 
-  const performSongSearch = async (searchParameter: string) => {
-    try {
-      dispatch(searchSongsRequestLoading());
-      const response = await Services.searchSongs(searchParameter);
+  useEffect(() => {
+    getUserLastSearchResult();
+  }, [getUserLastSearchResult]);
 
-      dispatch(
-        searchSongsSuccess(transformSearchResult(response.data.tracks.items))
-      );
-    } catch (error) {
-      dispatch(searchSongsError(error));
-    }
-  };
+  const performSongSearch = useCallback(
+    async (searchParameter: string) => {
+      try {
+        if (!searchParameter) return;
+
+        dispatch(searchSongsRequestLoading());
+        const response = await Services.searchSongs(searchParameter);
+
+        dispatch(
+          searchSongsSuccess(transformSearchResult(response.data.tracks.items))
+        );
+
+        await Services.storeUserLastSearchQuery(
+          searchParameter,
+          transformSearchResult(response.data.tracks.items)
+        );
+      } catch (error) {
+        dispatch(searchSongsError(error));
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    performSongSearch(searchQuery);
+  }, [searchQuery, performSongSearch]);
 
   const logout = () => {
     dispatch(logoutUser());
     localStorage.clear();
 
-    history.push('/login');
+    goToLoginPage();
   };
 
   return (
@@ -86,7 +131,8 @@ const NavBar = () => {
             type="search"
             placeholder="Search"
             className="nav-bar__search--input"
-            onChange={(event) => performSongSearch(event.target.value)}
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
           />
         </li>
 

@@ -8,10 +8,12 @@ export const initialState: ReduxState = {
     getUserProfile: Status.IDLE,
     searchSongs: Status.IDLE,
     getNewReleases: Status.IDLE,
+    getUserLastSearchResult: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
   newReleases: [],
+  searchQuery: '',
 };
 
 const reducer = (
@@ -48,6 +50,7 @@ const reducer = (
           ...state.requestStatus,
           getUserProfile: Status.ERROR,
         },
+        error: action.error,
         userProfile: { ...DummyUser },
       };
     }
@@ -80,6 +83,7 @@ const reducer = (
           ...state.requestStatus,
           searchSongs: Status.ERROR,
         },
+        error: action.error,
       };
     }
 
@@ -117,6 +121,40 @@ const reducer = (
           ...state.requestStatus,
           getNewReleases: Status.ERROR,
         },
+        error: action.error,
+      };
+    }
+
+    case Actions.GET_USER_SEARCH_RESULT_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLastSearchResult: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.GET_USER_SEARCH_RESULT_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLastSearchResult: Status.SUCCESS,
+        },
+        searchQuery: action.payload.searchQuery,
+        searchResult: action.payload.searchResult,
+      };
+    }
+
+    case Actions.GET_USER_SEARCH_RESULT_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLastSearchResult: Status.ERROR,
+        },
+        error: action.error,
       };
     }
 
