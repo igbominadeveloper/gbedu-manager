@@ -27,7 +27,7 @@ const Authentication: FunctionComponent = () => {
       localStorage.setItem('token', access_token);
       localStorage.setItem('expires_in', String(timeToExpiration));
 
-      const getUserProfileAction = async () => {
+      const getUserProfile = async () => {
         try {
           dispatch(getUserProfileRequestLoading());
           const response = await Services.getUserProfile();
@@ -39,7 +39,7 @@ const Authentication: FunctionComponent = () => {
         }
       };
 
-      getUserProfileAction();
+      getUserProfile();
 
       history.push('/');
     }

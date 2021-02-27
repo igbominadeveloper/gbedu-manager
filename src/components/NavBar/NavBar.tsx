@@ -37,6 +37,16 @@ const NavBar = () => {
   const goToHomePage = () => history.push('/');
   const goToLoginPage = () => history.push('/login');
 
+  useEffect(() => {
+    const expirationTime = localStorage.getItem('expires_in');
+
+    if (!expirationTime) return;
+
+    if (new Date().getTime() > Number(expirationTime)) {
+      goToLoginPage();
+    }
+  });
+
   const getUserLastSearchResult = useCallback(async () => {
     try {
       dispatch(getUserLastSearchResultRequestLoading());
@@ -56,16 +66,6 @@ const NavBar = () => {
       dispatch(getUserLastSearchResultError(error.message));
     }
   }, [dispatch]);
-
-  useEffect(() => {
-    const expirationTime = localStorage.getItem('expires_in');
-
-    if (!expirationTime) return;
-
-    if (new Date().getTime() > Number(expirationTime)) {
-      goToLoginPage();
-    }
-  });
 
   useEffect(() => {
     getUserLastSearchResult();
