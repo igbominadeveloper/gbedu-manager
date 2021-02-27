@@ -2,8 +2,9 @@ import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Song from '../../components/Song/Song';
+import Loader from '../../components/Loader/Loader';
 
-import { ReduxState, SongInterface, SongLayout } from '../../types';
+import { ReduxState, SongInterface, SongLayout, Status } from '../../types';
 
 import Empty from '../../assets/empty.svg';
 import SpotifyIcon from '../../assets/spotify.svg';
@@ -26,6 +27,13 @@ const MyLibrary: FunctionComponent = () => {
   const library = useSelector((state: ReduxState) => state.userLibrary);
   const libraryIsEmpty = useSelector(
     (state: ReduxState) => state.userLibrary.length === 0
+  );
+  const libraryIsBeingLoaded = useSelector(
+    (state: ReduxState) => state.requestStatus.getUserLibrary === Status.LOADING
+  );
+  const libraryIsBeingExportedToSpotify = useSelector(
+    (state: ReduxState) =>
+      state.requestStatus.exportToSpotifyPlaylist === Status.LOADING
   );
 
   const getUserLibrary = useCallback(async () => {
@@ -68,6 +76,7 @@ const MyLibrary: FunctionComponent = () => {
           <button
             className="export-to-spotify"
             onClick={exportToSpotifyPlaylist}
+            disabled={libraryIsBeingExportedToSpotify}
           >
             <img
               src={SpotifyIcon}
@@ -75,12 +84,17 @@ const MyLibrary: FunctionComponent = () => {
               className="export-to-spotify__image"
             />
             Export To Spotify
+            <span className="export-to-spotify__loader">
+              {libraryIsBeingExportedToSpotify && <Loader width={3} />}
+            </span>
           </button>
         )}
       </div>
 
       <div className="my-library">
-        {libraryIsEmpty && (
+        {libraryIsBeingLoaded ? (
+          <Loader width={8} />
+        ) : libraryIsEmpty ? (
           <div className="my-library__empty">
             <img
               className="my-library__empty--image"
@@ -91,10 +105,11 @@ const MyLibrary: FunctionComponent = () => {
               Your Library is empty
             </p>
           </div>
+        ) : (
+          library.map((song: SongInterface) => (
+            <Song key={song.id} song={song} layout={SongLayout.PORTRAIT} />
+          ))
         )}
-        {library.map((song: SongInterface) => (
-          <Song key={song.id} song={song} layout={SongLayout.PORTRAIT} />
-        ))}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -27,6 +27,8 @@ import './NavBar.scss';
 const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const routeMatch = useLocation();
+
   const userSearchQuery = useSelector((state: ReduxState) => state.searchQuery);
 
   const [searchQuery, setSearchQuery] = useState(userSearchQuery);
@@ -36,7 +38,9 @@ const NavBar = () => {
   const userProfileImage = userProfile.images[0]?.url;
 
   const goToHomePage = () => history.push('/');
-  const goToLoginPage = () => history.push('/login');
+  const goToLoginPage = useCallback(() => {
+    history.push('/login');
+  }, [history]);
   const goToMyLibrary = () => history.push('/my-library');
 
   useEffect(() => {
@@ -47,7 +51,7 @@ const NavBar = () => {
     if (new Date().getTime() > Number(expirationTime)) {
       goToLoginPage();
     }
-  });
+  }, [goToLoginPage]);
 
   const getUserLastSearchResult = useCallback(async () => {
     try {
@@ -100,6 +104,13 @@ const NavBar = () => {
     performSongSearch(searchQuery);
   }, [searchQuery, performSongSearch]);
 
+  useEffect(() => {
+    if (routeMatch.pathname === '/') {
+    }
+
+    return () => {};
+  }, [routeMatch.pathname]);
+
   const logout = () => {
     dispatch(logoutUser());
     localStorage.clear();
@@ -116,6 +127,7 @@ const NavBar = () => {
               src={userProfileImage || Avatar}
               alt="User Avatar"
               className="nav-bar__user-profile--avatar"
+              loading="lazy"
             />
 
             <p className="nav-bar__user-profile--username">
@@ -124,29 +136,31 @@ const NavBar = () => {
           </div>
 
           <p className="nav-bar__link" onClick={goToMyLibrary}>
-            My Library
+            <span>My Library</span>
           </p>
         </li>
 
-        <li className="nav-bar__search" role="link">
-          <img
-            src={SearchIcon}
-            alt="Search Icon"
-            className="nav-bar__search--icon"
-          />
+        <div className="nav-bar__actions">
+          <li className="nav-bar__search" role="link">
+            <img
+              src={SearchIcon}
+              alt="Search Icon"
+              className="nav-bar__search--icon"
+            />
 
-          <input
-            type="search"
-            placeholder="Search"
-            className="nav-bar__search--input"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-          />
-        </li>
+            <input
+              type="search"
+              placeholder="Search"
+              className="nav-bar__search--input"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+            />
+          </li>
 
-        <li className="nav-bar__logout pointer" onClick={logout} role="link">
-          <img src={LogoutIcon} alt="Logout Icon" />
-        </li>
+          <li className="nav-bar__logout pointer" onClick={logout} role="link">
+            <img src={LogoutIcon} alt="Logout Icon" />
+          </li>
+        </div>
       </ul>
     </nav>
   );

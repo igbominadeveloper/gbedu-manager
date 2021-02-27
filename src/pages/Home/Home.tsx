@@ -11,6 +11,7 @@ import {
 } from '../../types';
 
 import Song from '../../components/Song/Song';
+import Loader from '../../components/Loader/Loader';
 
 import {
   getNewReleasesError,
@@ -45,6 +46,9 @@ const Home: FunctionComponent = () => {
   });
   const albumTracks = useSelector((state: ReduxState) => state.albumTracks);
   const activeAlbum = useSelector((state: ReduxState) => state.activeAlbum);
+  const newReleasesAreBeingLoaded = useSelector(
+    (state: ReduxState) => state.requestStatus.getNewReleases === Status.LOADING
+  );
 
   const getNewReleases = useCallback(async () => {
     try {
@@ -82,23 +86,27 @@ const Home: FunctionComponent = () => {
       <section className="new-release">
         <div className="page-title">New Releases</div>
 
-        <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
-          {newReleases.map((album: Album) => (
-            <Song
-              key={album.id}
-              song={{
-                album: album.name,
-                duration: 9,
-                id: album.id,
-                thumbnail: album.images[1].url,
-                title: album.name,
-                uri: album.uri,
-                type: album.type,
-              }}
-              layout={SongLayout.PORTRAIT}
-            />
-          ))}
-        </div>
+        {newReleasesAreBeingLoaded ? (
+          <Loader width={8} />
+        ) : (
+          <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
+            {newReleases.map((album: Album) => (
+              <Song
+                key={album.id}
+                song={{
+                  album: album.name,
+                  duration: 9,
+                  id: album.id,
+                  thumbnail: album.images[1].url,
+                  title: album.name,
+                  uri: album.uri,
+                  type: album.type,
+                }}
+                layout={SongLayout.PORTRAIT}
+              />
+            ))}
+          </div>
+        )}
 
         {albumTracks.length > 0 && (
           <article className="album-tracks">
@@ -107,6 +115,7 @@ const Home: FunctionComponent = () => {
                 src={activeAlbum.thumbnail}
                 alt="Album alt"
                 className="album-tracks__album--art"
+                loading="lazy"
               />
               <header className="album-tracks__album--name">
                 {activeAlbum.name}
