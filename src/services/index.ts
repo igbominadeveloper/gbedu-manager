@@ -38,7 +38,7 @@ export const getUserLastSearchResult = () => {
   }).then((response) => response.json());
 };
 
-export const addSongToUserLibrary = (songs: Array<SongInterface>) => {
+export const manageUserLibrary = (songs: Array<SongInterface>) => {
   const userProfileString = localStorage.getItem('auth-user');
 
   const userProfile = convertUserStringToJson(userProfileString || '');

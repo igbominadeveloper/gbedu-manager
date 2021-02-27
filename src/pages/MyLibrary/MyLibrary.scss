@@ -1,0 +1,16 @@
+.my-library {
+  &__empty {
+    margin: 1rem auto;
+
+    text-align: center;
+    width: 20rem;
+
+    &--image {
+      margin: 1rem 0;
+    }
+
+    &--text {
+      color: var(--color-blue);
+    }
+  }
+}

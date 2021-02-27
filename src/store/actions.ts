@@ -78,18 +78,25 @@ export const getUserLastSearchResultError = (error: string): ReduxAction => ({
 });
 
 // store user favorited tracks/albums to firebase
-export const addToLibraryRequestLoading = (): ReduxAction => ({
-  type: Actions.ADD_TO_LIBRARY_LOADING,
+export const manageLibraryRequestLoading = (): ReduxAction => ({
+  type: Actions.MANAGE_LIBRARY_LOADING,
 });
 
-export const addToLibrarySuccess = (payload: SongInterface): ReduxAction => {
+export const manageLibrarySuccess = (payload: SongInterface): ReduxAction => {
   return {
-    type: Actions.ADD_TO_LIBRARY_SUCCESS,
+    type: Actions.MANAGE_LIBRARY_SUCCESS,
     payload,
   };
 };
 
-export const addToLibraryError = (error: string): ReduxAction => ({
-  type: Actions.ADD_TO_LIBRARY_ERROR,
+export const removeTrackFromLibrary = (payload: SongInterface): ReduxAction => {
+  return {
+    type: Actions.REMOVE_TRACK_FROM_LIBRARY,
+    payload,
+  };
+};
+
+export const manageLibraryError = (error: string): ReduxAction => ({
+  type: Actions.MANAGE_LIBRARY_ERROR,
   error,
 });

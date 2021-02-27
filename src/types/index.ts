@@ -60,7 +60,7 @@ export interface RequestStatus {
   searchSongs: Status;
   getNewReleases: Status;
   getUserLastSearchResult: Status;
-  addToLibrary: Status;
+  manageLibrary: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;

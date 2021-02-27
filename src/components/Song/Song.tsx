@@ -2,9 +2,10 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  addToLibraryRequestLoading,
-  addToLibrarySuccess,
-  addToLibraryError,
+  manageLibraryRequestLoading,
+  manageLibrarySuccess,
+  manageLibraryError,
+  removeTrackFromLibrary,
 } from '../../store/actions';
 
 import * as Services from '../../services';
@@ -27,23 +28,38 @@ const Song: React.FunctionComponent<SongProps> = ({
   const dispatch = useDispatch();
   const library = useSelector((state: ReduxState) => state.userLibray);
 
-  const addToLibrary = useCallback(
+  const songHasBeenAddedToLibrary = useSelector((state: ReduxState) => {
+    const songExists = state.userLibray.find(
+      (track: SongInterface) => track.id === song.id
+    );
+
+    return songExists ? true : false;
+  });
+
+  const manageLibrary = useCallback(
     async (song: SongInterface) => {
       try {
-        dispatch(addToLibraryRequestLoading());
-        dispatch(addToLibrarySuccess(song));
+        dispatch(manageLibraryRequestLoading());
 
-        const allFavourites = [song].concat(...library);
+        let allFavourites = [];
 
-        await Services.addSongToUserLibrary(allFavourites);
+        if (songHasBeenAddedToLibrary) {
+          allFavourites = library.filter(
+            (track: SongInterface) => track.id !== song.id
+          );
+
+          dispatch(removeTrackFromLibrary(song));
+        } else {
+          allFavourites = [song].concat(...library);
+          dispatch(manageLibrarySuccess(song));
+        }
+
+        await Services.manageUserLibrary(allFavourites);
       } catch (error) {
-        dispatch(addToLibraryError(error.message));
+        dispatch(manageLibraryError(error.message));
       }
-
-      // get the song, push to the library
-      // push the library to firebase
     },
-    [dispatch, library]
+    [dispatch, library, songHasBeenAddedToLibrary]
   );
 
   return layout === SongLayout.PORTRAIT ? (
@@ -54,9 +70,9 @@ const Song: React.FunctionComponent<SongProps> = ({
       <div className="song-portrait__title">{truncate(song.title)}</div>
       <div
         className="song-portrait__action pointer"
-        onClick={() => addToLibrary(song)}
+        onClick={() => manageLibrary(song)}
       >
-        Add +
+        {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
       </div>
     </div>
   ) : (
@@ -73,9 +89,9 @@ const Song: React.FunctionComponent<SongProps> = ({
       </div>
       <div
         className="song-landscape__action pointer"
-        onClick={() => addToLibrary(song)}
+        onClick={() => manageLibrary(song)}
       >
-        Add +
+        {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
       </div>
     </div>
   );
