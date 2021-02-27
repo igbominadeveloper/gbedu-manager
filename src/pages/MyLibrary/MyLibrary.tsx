@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
+import { FunctionComponent, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Song from '../../components/Song/Song';
 
@@ -7,13 +7,37 @@ import { ReduxState, SongInterface, SongLayout } from '../../types';
 
 import Empty from '../../assets/empty.svg';
 
+import {
+  getUserLibraryError,
+  getUserLibraryRequestLoading,
+  getUserLibrarySuccess,
+} from '../../store/actions';
+
+import * as Services from '../../services';
+
 import './MyLibrary.scss';
 
 const MyLibrary: FunctionComponent = () => {
-  const library = useSelector((state: ReduxState) => state.userLibray);
+  const dispatch = useDispatch();
+  const library = useSelector((state: ReduxState) => state.userLibrary);
   const libraryIsEmpty = useSelector(
-    (state: ReduxState) => state.userLibray.length === 0
+    (state: ReduxState) => state.userLibrary.length === 0
   );
+
+  const getUserLibrary = useCallback(async () => {
+    try {
+      dispatch(getUserLibraryRequestLoading());
+      const response = await Services.getUserLibrary();
+
+      dispatch(getUserLibrarySuccess(response));
+    } catch (error) {
+      dispatch(getUserLibraryError(error));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    getUserLibrary();
+  }, [getUserLibrary]);
 
   return (
     <div className="page">

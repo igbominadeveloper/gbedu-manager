@@ -22,7 +22,7 @@ export const initialState: ReduxState = {
   searchResult: [],
   newReleases: [],
   searchQuery: '',
-  userLibray: [],
+  userLibrary: [],
 };
 
 const reducer = (
@@ -152,7 +152,7 @@ const reducer = (
           getUserLastSearchResult: Status.SUCCESS,
         },
         searchQuery: action.payload.searchQuery,
-        searchResult: action.payload.searchResult,
+        searchResult: action.payload.searchResult || [],
       };
     }
 
@@ -184,7 +184,7 @@ const reducer = (
           ...state.requestStatus,
           manageLibrary: Status.SUCCESS,
         },
-        userLibray: [action.payload].concat(state.userLibray),
+        userLibrary: [action.payload].concat(state.userLibrary),
       };
     }
 
@@ -202,7 +202,7 @@ const reducer = (
     case Actions.REMOVE_TRACK_FROM_LIBRARY: {
       return {
         ...state,
-        userLibray: state.userLibray.filter(
+        userLibrary: state.userLibrary.filter(
           (track: SongInterface) => track.id !== action.payload.id
         ),
       };
@@ -225,7 +225,7 @@ const reducer = (
           ...state.requestStatus,
           getUserLibrary: Status.SUCCESS,
         },
-        userLibray: action.payload,
+        userLibrary: action.payload || [],
       };
     }
 

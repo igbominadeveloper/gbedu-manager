@@ -26,10 +26,10 @@ const Song: React.FunctionComponent<SongProps> = ({
   layout,
 }: SongProps) => {
   const dispatch = useDispatch();
-  const library = useSelector((state: ReduxState) => state.userLibray);
+  const library = useSelector((state: ReduxState) => state.userLibrary);
 
   const songHasBeenAddedToLibrary = useSelector((state: ReduxState) => {
-    const songExists = state.userLibray.find(
+    const songExists = state.userLibrary.find(
       (track: SongInterface) => track.id === song.id
     );
 
