@@ -11,7 +11,7 @@ import Login from './pages/Login/Login';
 //Components
 import NavBar from './components/NavBar/NavBar';
 import Authentication from './components/Authentication/Authentication';
-import { hydrateStringifiedUserObject } from './utils';
+import { convertUserStringToJson } from './utils';
 import { getUserProfileSuccess } from './store/actions';
 
 const App = () => {
@@ -45,7 +45,7 @@ const App = () => {
     }
 
     if (authenticatedUser) {
-      const hydratedUserObject = hydrateStringifiedUserObject(
+      const hydratedUserObject = convertUserStringToJson(
         authenticatedUser || ''
       );
 

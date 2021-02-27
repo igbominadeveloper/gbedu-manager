@@ -43,6 +43,6 @@ export const getTokenFromResponse = (
   };
 };
 
-export const hydrateStringifiedUserObject = (
+export const convertUserStringToJson = (
   userObjectString: string
 ): SpotifyUser => JSON.parse(userObjectString);

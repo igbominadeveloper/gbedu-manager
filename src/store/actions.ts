@@ -56,3 +56,23 @@ export const getNewReleasesError = (error: string): ReduxAction => ({
   type: Actions.GET_NEW_RELEASES_ERROR,
   error,
 });
+
+// retrieve user search query from firebase
+export const getUserLastSearchResultRequestLoading = (): ReduxAction => ({
+  type: Actions.GET_USER_SEARCH_RESULT_LOADING,
+});
+
+export const getUserLastSearchResultSuccess = (payload: {
+  searchQuery: string;
+  searchResult: Array<SongInterface>;
+}): ReduxAction => {
+  return {
+    type: Actions.GET_USER_SEARCH_RESULT_SUCCESS,
+    payload,
+  };
+};
+
+export const getUserLastSearchResultError = (error: string): ReduxAction => ({
+  type: Actions.GET_USER_SEARCH_RESULT_ERROR,
+  error,
+});
