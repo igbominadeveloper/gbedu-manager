@@ -4,6 +4,7 @@ import {
   ReduxAction,
   DummyUser,
   SongInterface,
+  DummyActiveAlbum,
 } from '../types';
 
 import * as Actions from './constants';
@@ -17,12 +18,18 @@ export const initialState: ReduxState = {
     getUserLastSearchResult: Status.IDLE,
     manageLibrary: Status.IDLE,
     getUserLibrary: Status.IDLE,
+    exportToSpotifyPlaylist: Status.IDLE,
+    getAlbumTracks: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
   newReleases: [],
   searchQuery: '',
   userLibrary: [],
+  albumTracks: [],
+  activeAlbum: {
+    ...DummyActiveAlbum,
+  },
 };
 
 const reducer = (
@@ -235,6 +242,70 @@ const reducer = (
         requestStatus: {
           ...state.requestStatus,
           getUserLibrary: Status.ERROR,
+        },
+        error: action.error,
+      };
+    }
+
+    case Actions.EXPORT_TO_SPOTIFY_PLAYLIST_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          exportToSpotifyPlaylist: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.EXPORT_TO_SPOTIFY_PLAYLIST_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          exportToSpotifyPlaylist: Status.SUCCESS,
+        },
+      };
+    }
+
+    case Actions.EXPORT_TO_SPOTIFY_PLAYLIST_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          exportToSpotifyPlaylist: Status.ERROR,
+        },
+        error: action.error,
+      };
+    }
+
+    case Actions.GET_ALBUM_TRACKS_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getAlbumTracks: Status.LOADING,
+        },
+        activeAlbum: action.payload,
+      };
+    }
+
+    case Actions.GET_ALBUM_TRACKS_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getAlbumTracks: Status.SUCCESS,
+        },
+        albumTracks: action.payload,
+      };
+    }
+
+    case Actions.GET_ALBUM_TRACKS_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getAlbumTracks: Status.ERROR,
         },
         error: action.error,
       };

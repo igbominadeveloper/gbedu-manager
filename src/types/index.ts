@@ -4,6 +4,8 @@ export interface SongInterface {
   album: string;
   duration: number;
   id: string;
+  uri: string;
+  type: string;
 }
 
 type Artist = {
@@ -29,6 +31,22 @@ export interface Album {
   name: string;
   release_date: string;
   total_tracks: number;
+  uri: string;
+  id: string;
+  type: string;
+}
+export interface AlbumTrack {
+  artists: Array<Artist>;
+  name: string;
+  duration_ms: number;
+  uri: string;
+  id: string;
+  type: string;
+}
+
+export interface ActiveAlbum {
+  thumbnail: string;
+  name: string;
   uri: string;
   id: string;
 }
@@ -62,6 +80,8 @@ export interface RequestStatus {
   getUserLastSearchResult: Status;
   manageLibrary: Status;
   getUserLibrary: Status;
+  exportToSpotifyPlaylist: Status;
+  getAlbumTracks: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
@@ -71,6 +91,8 @@ export interface ReduxState {
   newReleases: Array<Album>;
   searchQuery: string;
   userLibrary: Array<SongInterface>;
+  albumTracks: Array<AlbumTrack>;
+  activeAlbum: ActiveAlbum;
 }
 
 export interface ReduxAction {
@@ -108,5 +130,12 @@ export const DummyUser: SpotifyUser = {
   id: '',
   images: [],
   type: '',
+  uri: '',
+};
+
+export const DummyActiveAlbum: ActiveAlbum = {
+  id: '',
+  thumbnail: '',
+  name: '',
   uri: '',
 };

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {
   Album,
+  AlbumTrack,
   ReduxState,
   SongInterface,
   SongLayout,
@@ -25,8 +26,9 @@ import * as Services from '../../services';
 import './Home.scss';
 
 const Home: FunctionComponent = () => {
+  // const [showAlbumTracks, setShowAlbumTracks] = useState(false);
   const dispatch = useDispatch();
-  const tracks = useSelector((state: ReduxState) => state.searchResult);
+  const searchResult = useSelector((state: ReduxState) => state.searchResult);
   const newReleases = useSelector((state: ReduxState) => state.newReleases);
   const searchCameBackEmpty = useSelector((state: ReduxState) => {
     const {
@@ -41,6 +43,8 @@ const Home: FunctionComponent = () => {
       searchResult.length === 0
     );
   });
+  const albumTracks = useSelector((state: ReduxState) => state.albumTracks);
+  const activeAlbum = useSelector((state: ReduxState) => state.activeAlbum);
 
   const getNewReleases = useCallback(async () => {
     try {
@@ -88,11 +92,49 @@ const Home: FunctionComponent = () => {
                 id: album.id,
                 thumbnail: album.images[1].url,
                 title: album.name,
+                uri: album.uri,
+                type: album.type,
               }}
               layout={SongLayout.PORTRAIT}
             />
           ))}
         </div>
+
+        {albumTracks.length > 0 && (
+          <article className="album-tracks">
+            <div className="album-tracks__album">
+              <img
+                src={activeAlbum.thumbnail}
+                alt="Album alt"
+                className="album-tracks__album--art"
+              />
+              <header className="album-tracks__album--name">
+                {activeAlbum.name}
+              </header>
+            </div>
+
+            <section className="tracks">
+              <header className="page-sub-title tracks__header">
+                Tracks ({albumTracks.length})
+              </header>
+              {albumTracks.map((track: AlbumTrack) => (
+                <Song
+                  key={track.id}
+                  song={{
+                    album: activeAlbum.name,
+                    duration: track.duration_ms,
+                    id: track.id,
+                    thumbnail: activeAlbum.thumbnail,
+                    title: track.name,
+                    type: track.type,
+                    uri: track.uri,
+                  }}
+                  layout={SongLayout.LANDSCAPE}
+                />
+              ))}
+            </section>
+          </article>
+        )}
       </section>
 
       <section className="search-results">
@@ -108,7 +150,7 @@ const Home: FunctionComponent = () => {
           {searchCameBackEmpty ? (
             <p>No Match Found</p>
           ) : (
-            tracks.map((song: SongInterface) => (
+            searchResult.map((song: SongInterface) => (
               <Song key={song.id} song={song} layout={SongLayout.LANDSCAPE} />
             ))
           )}
