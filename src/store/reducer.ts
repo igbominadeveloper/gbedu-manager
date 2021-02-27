@@ -1,4 +1,10 @@
-import { ReduxState, Status, ReduxAction, DummyUser } from '../types';
+import {
+  ReduxState,
+  Status,
+  ReduxAction,
+  DummyUser,
+  SongInterface,
+} from '../types';
 
 import * as Actions from './constants';
 
@@ -9,7 +15,7 @@ export const initialState: ReduxState = {
     searchSongs: Status.IDLE,
     getNewReleases: Status.IDLE,
     getUserLastSearchResult: Status.IDLE,
-    addToLibrary: Status.IDLE,
+    manageLibrary: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
@@ -160,35 +166,44 @@ const reducer = (
       };
     }
 
-    case Actions.ADD_TO_LIBRARY_LOADING: {
+    case Actions.MANAGE_LIBRARY_LOADING: {
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          addToLibrary: Status.LOADING,
+          manageLibrary: Status.LOADING,
         },
       };
     }
 
-    case Actions.ADD_TO_LIBRARY_SUCCESS: {
+    case Actions.MANAGE_LIBRARY_SUCCESS: {
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          addToLibrary: Status.SUCCESS,
+          manageLibrary: Status.SUCCESS,
         },
         userLibray: [action.payload].concat(state.userLibray),
       };
     }
 
-    case Actions.ADD_TO_LIBRARY_ERROR: {
+    case Actions.MANAGE_LIBRARY_ERROR: {
       return {
         ...state,
         requestStatus: {
           ...state.requestStatus,
-          addToLibrary: Status.ERROR,
+          manageLibrary: Status.ERROR,
         },
         error: action.error,
+      };
+    }
+
+    case Actions.REMOVE_TRACK_FROM_LIBRARY: {
+      return {
+        ...state,
+        userLibray: state.userLibray.filter(
+          (track: SongInterface) => track.id !== action.payload.id
+        ),
       };
     }
 
