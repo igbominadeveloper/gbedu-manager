@@ -61,6 +61,7 @@ export interface RequestStatus {
   getNewReleases: Status;
   getUserLastSearchResult: Status;
   manageLibrary: Status;
+  getUserLibrary: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;

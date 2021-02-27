@@ -19,7 +19,7 @@ const MyLibrary: FunctionComponent = () => {
     <div className="page">
       <div className="page-title">My Library</div>
 
-      <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
+      <div className="my-library">
         {libraryIsEmpty && (
           <div className="my-library__empty">
             <img

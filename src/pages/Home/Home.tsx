@@ -15,6 +15,9 @@ import {
   getNewReleasesError,
   getNewReleasesRequestLoading,
   getNewReleasesSuccess,
+  getUserLibraryError,
+  getUserLibraryRequestLoading,
+  getUserLibrarySuccess,
 } from '../../store/actions';
 
 import * as Services from '../../services';
@@ -52,9 +55,23 @@ const Home: FunctionComponent = () => {
     }
   }, [dispatch]);
 
+  const getUserLibrary = useCallback(async () => {
+    try {
+      dispatch(getUserLibraryRequestLoading());
+      const response = await Services.getUserLibrary();
+
+      dispatch(getUserLibrarySuccess(response));
+    } catch (error) {
+      console.log(error.message);
+
+      dispatch(getUserLibraryError(error));
+    }
+  }, [dispatch]);
+
   useEffect(() => {
+    getUserLibrary();
     getNewReleases();
-  }, [getNewReleases]);
+  }, [getNewReleases, getUserLibrary]);
 
   return (
     <div className="home page">

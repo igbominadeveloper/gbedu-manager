@@ -48,3 +48,13 @@ export const manageUserLibrary = (songs: Array<SongInterface>) => {
     body: JSON.stringify(songs),
   });
 };
+
+export const getUserLibrary = () => {
+  const userProfileString = localStorage.getItem('auth-user');
+
+  const userProfile = convertUserStringToJson(userProfileString || '');
+
+  return fetch(`${firebaseUrl}/${userProfile.id}/favourites.json`, {
+    method: 'get',
+  }).then((response) => response.json());
+};

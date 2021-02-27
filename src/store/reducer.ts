@@ -16,6 +16,7 @@ export const initialState: ReduxState = {
     getNewReleases: Status.IDLE,
     getUserLastSearchResult: Status.IDLE,
     manageLibrary: Status.IDLE,
+    getUserLibrary: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
@@ -204,6 +205,38 @@ const reducer = (
         userLibray: state.userLibray.filter(
           (track: SongInterface) => track.id !== action.payload.id
         ),
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.SUCCESS,
+        },
+        userLibray: action.payload,
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.ERROR,
+        },
+        error: action.error,
       };
     }
 
