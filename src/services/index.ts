@@ -1,8 +1,8 @@
 import axiosInstance from './generalAxiosInstance';
-import { convertUserStringToJson } from '../utils';
+import { activeUserProfile } from '../utils';
 import { SongInterface } from '../types';
 
-// const spotifyUrl = process.env.REACT_APP_SPOTIFY_API_URL;
+const applicationName = process.env.REACT_APP_APP_NAME;
 
 const firebaseUrl = process.env.REACT_APP_FIREBASE_URL;
 
@@ -14,13 +14,28 @@ export const searchSongs = (searchString: string) =>
 export const getNewReleases = () =>
   axiosInstance.get(`/browse/new-releases?limit=5`);
 
+export const createNewPlaylist = () => {
+  const userProfile = activeUserProfile();
+
+  return axiosInstance.post(`/users/${userProfile.id}/playlists`, {
+    name: `${applicationName} playlist @ ${new Date().toLocaleTimeString()}`,
+    public: false,
+  });
+};
+
+export const addItemsToPlaylist = (playlistId: string, uris: Array<string>) =>
+  axiosInstance.post(`playlists/${playlistId}/tracks`, {
+    uris,
+  });
+
+export const getAlbumTracks = (albumId: string) =>
+  axiosInstance.get(`albums/${albumId}/tracks`);
+
 export const storeUserLastSearchQuery = (
   searchQuery: string,
   searchResult: Array<SongInterface>
 ) => {
-  const userProfileString = localStorage.getItem('auth-user');
-
-  const userProfile = convertUserStringToJson(userProfileString || '');
+  const userProfile = activeUserProfile();
 
   return fetch(`${firebaseUrl}/${userProfile.id}/search.json`, {
     method: 'put',
@@ -29,9 +44,7 @@ export const storeUserLastSearchQuery = (
 };
 
 export const getUserLastSearchResult = () => {
-  const userProfileString = localStorage.getItem('auth-user');
-
-  const userProfile = convertUserStringToJson(userProfileString || '');
+  const userProfile = activeUserProfile();
 
   return fetch(`${firebaseUrl}/${userProfile.id}/search.json`, {
     method: 'get',
@@ -39,9 +52,7 @@ export const getUserLastSearchResult = () => {
 };
 
 export const manageUserLibrary = (songs: Array<SongInterface>) => {
-  const userProfileString = localStorage.getItem('auth-user');
-
-  const userProfile = convertUserStringToJson(userProfileString || '');
+  const userProfile = activeUserProfile();
 
   return fetch(`${firebaseUrl}/${userProfile.id}/favourites.json`, {
     method: 'put',
@@ -50,9 +61,7 @@ export const manageUserLibrary = (songs: Array<SongInterface>) => {
 };
 
 export const getUserLibrary = () => {
-  const userProfileString = localStorage.getItem('auth-user');
-
-  const userProfile = convertUserStringToJson(userProfileString || '');
+  const userProfile = activeUserProfile();
 
   return fetch(`${firebaseUrl}/${userProfile.id}/favourites.json`, {
     method: 'get',

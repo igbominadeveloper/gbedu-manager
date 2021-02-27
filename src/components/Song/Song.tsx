@@ -6,6 +6,9 @@ import {
   manageLibrarySuccess,
   manageLibraryError,
   removeTrackFromLibrary,
+  getAlbumTracksRequestLoading,
+  getAlbumTracksSuccess,
+  getAlbumTracksError,
 } from '../../store/actions';
 
 import * as Services from '../../services';
@@ -62,18 +65,49 @@ const Song: React.FunctionComponent<SongProps> = ({
     [dispatch, library, songHasBeenAddedToLibrary]
   );
 
+  const getAlbumTracks = useCallback(
+    async (album: SongInterface) => {
+      try {
+        dispatch(
+          getAlbumTracksRequestLoading({
+            id: album.id,
+            thumbnail: album.thumbnail,
+            name: album.title,
+            uri: album.uri,
+          })
+        );
+        const response = await Services.getAlbumTracks(album.id);
+
+        dispatch(getAlbumTracksSuccess(response.data.items));
+      } catch (error) {
+        dispatch(getAlbumTracksError(error.message));
+      }
+    },
+    [dispatch]
+  );
+
   return layout === SongLayout.PORTRAIT ? (
     <div className="song-portrait">
       <div className="song-portrait__thumbnail">
         <img src={song.thumbnail} alt={`${song.title}`} />
       </div>
       <div className="song-portrait__title">{truncate(song.title)}</div>
-      <div
-        className="song-portrait__action pointer"
-        onClick={() => manageLibrary(song)}
-      >
-        {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
-      </div>
+
+      {song.type === 'album' ? (
+        <div
+          className="song-portrait__action pointer"
+          onClick={() => getAlbumTracks(song)}
+        >
+          View Tracks
+        </div>
+      ) : (
+        <div
+          className="song-portrait__action pointer"
+          onClick={() => manageLibrary(song)}
+        >
+          {songHasBeenAddedToLibrary ? 'Remove -' : 'Add +'}
+        </div>
+      )}
     </div>
   ) : (
     <div className="song-landscape">

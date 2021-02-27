@@ -11,6 +11,8 @@ export const transformSearchResult = (
     thumbnail: song.album.images[1].url,
     title: song.name,
     id: song.id,
+    uri: song.uri,
+    type: song.type,
   }));
 
 export const truncate = (word: string, maxLength: number = 13): string => {
@@ -46,3 +48,9 @@ export const getTokenFromResponse = (
 export const convertUserStringToJson = (
   userObjectString: string
 ): SpotifyUser => JSON.parse(userObjectString);
+
+export const activeUserProfile = (): SpotifyUser => {
+  const userProfileString = localStorage.getItem('auth-user');
+
+  return convertUserStringToJson(userProfileString || '');
+};

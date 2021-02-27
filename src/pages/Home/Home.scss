@@ -5,8 +5,6 @@
 }
 
 .songs-portrait {
-  margin: 2rem;
-
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -36,5 +34,42 @@
     &--album {
       width: 39rem;
     }
+  }
+}
+
+.album-tracks {
+  margin: 4rem 0;
+  display: flex;
+
+  &__album {
+    margin: 0 1rem;
+    padding: 1rem;
+
+    width: 25rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &--art {
+      border-radius: 50%;
+      width: 18rem;
+      height: 18rem;
+    }
+
+    &--name {
+      font-size: var(--font-sub-title);
+      font-weight: 600;
+
+      margin: 2rem 0 0;
+    }
+  }
+}
+
+.tracks {
+  flex: 1;
+
+  &__header {
+    font-weight: 600;
   }
 }

@@ -1,4 +1,12 @@
-import { ReduxAction, SongInterface, SpotifyUser } from '../types';
+import {
+  ActiveAlbum,
+  Album,
+  AlbumTrack,
+  ReduxAction,
+  SongInterface,
+  SpotifyUser,
+} from '../types';
+
 import * as Actions from './constants';
 
 // get user profile
@@ -45,9 +53,7 @@ export const getNewReleasesRequestLoading = (): ReduxAction => ({
   type: Actions.GET_NEW_RELEASES_LOADING,
 });
 
-export const getNewReleasesSuccess = (
-  payload: Array<SongInterface>
-): ReduxAction => ({
+export const getNewReleasesSuccess = (payload: Array<Album>): ReduxAction => ({
   type: Actions.GET_NEW_RELEASES_SUCCESS,
   payload,
 });
@@ -117,5 +123,43 @@ export const getUserLibrarySuccess = (
 
 export const getUserLibraryError = (error: string): ReduxAction => ({
   type: Actions.GET_USER_LIBRARY_ERROR,
+  error,
+});
+
+// export favorited tracks/albums to spotify playlist
+export const exportToSpotifyPlaylistRequestLoading = (): ReduxAction => ({
+  type: Actions.EXPORT_TO_SPOTIFY_PLAYLIST_LOADING,
+});
+
+export const exportToSpotifyPlaylistSuccess = (): ReduxAction => {
+  return {
+    type: Actions.EXPORT_TO_SPOTIFY_PLAYLIST_SUCCESS,
+  };
+};
+
+export const exportToSpotifyPlaylistError = (error: string): ReduxAction => ({
+  type: Actions.EXPORT_TO_SPOTIFY_PLAYLIST_ERROR,
+  error,
+});
+
+// get all the tracks in an albums
+export const getAlbumTracksRequestLoading = (
+  album: ActiveAlbum
+): ReduxAction => ({
+  type: Actions.GET_ALBUM_TRACKS_LOADING,
+  payload: album,
+});
+
+export const getAlbumTracksSuccess = (
+  tracks: Array<AlbumTrack>
+): ReduxAction => {
+  return {
+    type: Actions.GET_ALBUM_TRACKS_SUCCESS,
+    payload: tracks,
+  };
+};
+
+export const getAlbumTracksError = (error: string): ReduxAction => ({
+  type: Actions.GET_ALBUM_TRACKS_ERROR,
   error,
 });
