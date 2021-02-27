@@ -1,23 +1,21 @@
 import { FunctionComponent } from 'react';
+import { useSelector } from 'react-redux';
 
-import { SongInterface, SongLayout } from '../../types';
-import Mocks from '../../tests/mocks.json';
+import { ReduxState, SongInterface, SongLayout } from '../../types';
 
 import Song from '../../components/Song/Song';
 
-import { transformSearchResult } from '../../utils';
-
 const MyLibrary: FunctionComponent = () => {
+  const library = useSelector((state: ReduxState) => state.userLibray);
+
   return (
     <div className="page">
       <div className="page-title">My Library</div>
 
       <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
-        {transformSearchResult(Mocks.tracks.items).map(
-          (song: SongInterface) => (
-            <Song key={song.id} song={song} layout={SongLayout.PORTRAIT} />
-          )
-        )}
+        {library.map((song: SongInterface) => (
+          <Song key={song.id} song={song} layout={SongLayout.PORTRAIT} />
+        ))}
       </div>
     </div>
   );

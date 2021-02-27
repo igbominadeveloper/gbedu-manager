@@ -9,11 +9,13 @@ export const initialState: ReduxState = {
     searchSongs: Status.IDLE,
     getNewReleases: Status.IDLE,
     getUserLastSearchResult: Status.IDLE,
+    addToLibrary: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
   newReleases: [],
   searchQuery: '',
+  userLibray: [],
 };
 
 const reducer = (
@@ -153,6 +155,38 @@ const reducer = (
         requestStatus: {
           ...state.requestStatus,
           getUserLastSearchResult: Status.ERROR,
+        },
+        error: action.error,
+      };
+    }
+
+    case Actions.ADD_TO_LIBRARY_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          addToLibrary: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.ADD_TO_LIBRARY_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          addToLibrary: Status.SUCCESS,
+        },
+        userLibray: [action.payload].concat(state.userLibray),
+      };
+    }
+
+    case Actions.ADD_TO_LIBRARY_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          addToLibrary: Status.ERROR,
         },
         error: action.error,
       };
