@@ -1,4 +1,8 @@
 .my-library {
+  margin: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+
   &__empty {
     margin: 1rem auto;
 

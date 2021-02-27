@@ -77,7 +77,7 @@ export const getUserLastSearchResultError = (error: string): ReduxAction => ({
   error,
 });
 
-// store user favorited tracks/albums to firebase
+// add and remove user favorited tracks/albums to firebase
 export const manageLibraryRequestLoading = (): ReduxAction => ({
   type: Actions.MANAGE_LIBRARY_LOADING,
 });
@@ -98,5 +98,24 @@ export const removeTrackFromLibrary = (payload: SongInterface): ReduxAction => {
 
 export const manageLibraryError = (error: string): ReduxAction => ({
   type: Actions.MANAGE_LIBRARY_ERROR,
+  error,
+});
+
+// get user favorited tracks/albums from firebase
+export const getUserLibraryRequestLoading = (): ReduxAction => ({
+  type: Actions.GET_USER_LIBRARY_LOADING,
+});
+
+export const getUserLibrarySuccess = (
+  payload: Array<SongInterface>
+): ReduxAction => {
+  return {
+    type: Actions.GET_USER_LIBRARY_SUCCESS,
+    payload,
+  };
+};
+
+export const getUserLibraryError = (error: string): ReduxAction => ({
+  type: Actions.GET_USER_LIBRARY_ERROR,
   error,
 });

@@ -16,12 +16,13 @@ export const initialState: ReduxState = {
     getNewReleases: Status.IDLE,
     getUserLastSearchResult: Status.IDLE,
     manageLibrary: Status.IDLE,
+    getUserLibrary: Status.IDLE,
   },
   userProfile: { ...DummyUser },
   searchResult: [],
   newReleases: [],
   searchQuery: '',
-  userLibray: [],
+  userLibrary: [],
 };
 
 const reducer = (
@@ -151,7 +152,7 @@ const reducer = (
           getUserLastSearchResult: Status.SUCCESS,
         },
         searchQuery: action.payload.searchQuery,
-        searchResult: action.payload.searchResult,
+        searchResult: action.payload.searchResult || [],
       };
     }
 
@@ -183,7 +184,7 @@ const reducer = (
           ...state.requestStatus,
           manageLibrary: Status.SUCCESS,
         },
-        userLibray: [action.payload].concat(state.userLibray),
+        userLibrary: [action.payload].concat(state.userLibrary),
       };
     }
 
@@ -201,9 +202,41 @@ const reducer = (
     case Actions.REMOVE_TRACK_FROM_LIBRARY: {
       return {
         ...state,
-        userLibray: state.userLibray.filter(
+        userLibrary: state.userLibrary.filter(
           (track: SongInterface) => track.id !== action.payload.id
         ),
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_LOADING: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.LOADING,
+        },
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_SUCCESS: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.SUCCESS,
+        },
+        userLibrary: action.payload || [],
+      };
+    }
+
+    case Actions.GET_USER_LIBRARY_ERROR: {
+      return {
+        ...state,
+        requestStatus: {
+          ...state.requestStatus,
+          getUserLibrary: Status.ERROR,
+        },
+        error: action.error,
       };
     }
 

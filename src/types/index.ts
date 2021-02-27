@@ -61,6 +61,7 @@ export interface RequestStatus {
   getNewReleases: Status;
   getUserLastSearchResult: Status;
   manageLibrary: Status;
+  getUserLibrary: Status;
 }
 export interface ReduxState {
   requestStatus: RequestStatus;
@@ -69,7 +70,7 @@ export interface ReduxState {
   searchResult: Array<SongInterface>;
   newReleases: Array<Album>;
   searchQuery: string;
-  userLibray: Array<SongInterface>;
+  userLibrary: Array<SongInterface>;
 }
 
 export interface ReduxAction {
