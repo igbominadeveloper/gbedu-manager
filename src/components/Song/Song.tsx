@@ -1,12 +1,17 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToLibraryRequestLoading } from '../../store/actions';
+
+import {
+  addToLibraryRequestLoading,
+  addToLibrarySuccess,
+  addToLibraryError,
+} from '../../store/actions';
+
+import * as Services from '../../services';
+
 import { ReduxState, SongInterface, SongLayout } from '../../types';
 
 import { minuteAndSeconds, truncate } from '../../utils';
-
-import * as Services from '../../services';
-import { addToLibrarySuccess, addToLibraryError } from '../../store/actions';
 
 import './Song.scss';
 
