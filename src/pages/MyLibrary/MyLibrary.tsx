@@ -43,7 +43,7 @@ const MyLibrary: FunctionComponent = () => {
 
       dispatch(getUserLibrarySuccess(response));
     } catch (error) {
-      dispatch(getUserLibraryError(error));
+      dispatch(getUserLibraryError(error.message));
     }
   }, [dispatch]);
 
@@ -60,7 +60,7 @@ const MyLibrary: FunctionComponent = () => {
 
       dispatch(exportToSpotifyPlaylistSuccess());
     } catch (error) {
-      dispatch(exportToSpotifyPlaylistError(error));
+      dispatch(exportToSpotifyPlaylistError(error.message));
     }
   }, [dispatch, library]);
 

@@ -64,7 +64,7 @@ const Home: FunctionComponent = () => {
 
       dispatch(getNewReleasesSuccess(response.data.albums.items));
     } catch (error) {
-      dispatch(getNewReleasesError(error));
+      dispatch(getNewReleasesError(error.message));
     }
   }, [dispatch]);
 
@@ -76,7 +76,7 @@ const Home: FunctionComponent = () => {
 
         dispatch(getUserLibrarySuccess(response));
       } catch (error) {
-        dispatch(getUserLibraryError(error));
+        dispatch(getUserLibraryError(error.message));
       }
     };
 

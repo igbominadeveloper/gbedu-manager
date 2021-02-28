@@ -33,6 +33,10 @@ const NavBar = () => {
 
   const userProfile = useSelector((state: ReduxState) => state.userProfile);
 
+  const librarySize = useSelector(
+    (state: ReduxState) => state.userLibrary.length
+  );
+
   const userProfileImage = userProfile.images[0]?.url;
 
   const goToHomePage = () => history.push('/');
@@ -95,7 +99,7 @@ const NavBar = () => {
           transformSearchResult(response.data.tracks.items)
         );
       } catch (error) {
-        dispatch(searchSongsError(error));
+        dispatch(searchSongsError(error.message));
       }
     },
     [dispatch]
@@ -138,6 +142,7 @@ const NavBar = () => {
 
           <p className="nav-bar__link" onClick={goToMyLibrary}>
             <span>My Library</span>
+            <span className="nav-bar__library-count">{librarySize}</span>
           </p>
         </li>
 

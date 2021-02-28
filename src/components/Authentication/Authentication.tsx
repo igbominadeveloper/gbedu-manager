@@ -29,7 +29,7 @@ const Authentication: FunctionComponent = () => {
 
       dispatch(getUserProfileSuccess(userProfile));
     } catch (error) {
-      dispatch(getUserProfileError(error));
+      dispatch(getUserProfileError(error.message));
     }
   }, [dispatch]);
 
