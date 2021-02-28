@@ -4,11 +4,11 @@ workflow "Build and Test" {
 }
 
 action "Install dependencies" {
-  uses = "actions/npm@main"
+  uses = "actions/npm@master"
   runs = "npm install"
 }
 
-action "Run integration tests" {
+action "Run Unit tests" {
   uses = "docker://circleci/node:8-browsers"
   needs = "Install dependencies"
   runs = "npm run test"
