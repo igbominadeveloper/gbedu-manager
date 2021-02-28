@@ -68,52 +68,55 @@ const Home: FunctionComponent = () => {
     }
   }, [dispatch]);
 
+  const getUserLibrary = useCallback(async () => {
+    try {
+      dispatch(getUserLibraryRequestLoading());
+      const response = await Services.getUserLibrary();
+
+      dispatch(getUserLibrarySuccess(response));
+    } catch (error) {
+      toast.error(errorHandler(error.message));
+      dispatch(getUserLibraryError(error.message));
+    }
+  }, [dispatch]);
+
+  const getUserLastSearchResult = useCallback(async () => {
+    try {
+      dispatch(getUserLastSearchResultRequestLoading());
+      const response = await Services.getUserLastSearchResult();
+
+      dispatch(
+        getUserLastSearchResultSuccess({
+          searchQuery: response.searchQuery,
+          searchResult: response.searchResult,
+        })
+      );
+    } catch (error) {
+      toast.error(errorHandler(error.message));
+      dispatch(getUserLastSearchResultError(error.message));
+    }
+  }, [dispatch]);
+
   useEffect(() => {
-    const getUserLibrary = async () => {
-      try {
-        dispatch(getUserLibraryRequestLoading());
-        const response = await Services.getUserLibrary();
-
-        dispatch(getUserLibrarySuccess(response));
-      } catch (error) {
-        toast.error(errorHandler(error.message));
-        dispatch(getUserLibraryError(error.message));
-      }
-    };
-
-    const getUserLastSearchResult = async () => {
-      try {
-        dispatch(getUserLastSearchResultRequestLoading());
-        const response = await Services.getUserLastSearchResult();
-
-        dispatch(
-          getUserLastSearchResultSuccess({
-            searchQuery: response.searchQuery,
-            searchResult: response.searchResult,
-          })
-        );
-      } catch (error) {
-        toast.error(errorHandler(error.message));
-        dispatch(getUserLastSearchResultError(error.message));
-      }
-    };
-
     getUserLibrary();
     getNewReleases();
     getUserLastSearchResult();
-
-    return () => {};
-  }, [getNewReleases, dispatch]);
+  }, [getNewReleases, dispatch, getUserLastSearchResult, getUserLibrary]);
 
   return (
     <div className="home page">
       <section className="new-release">
-        <div className="page-title">New Releases</div>
+        <div className="page-title" data-testid="new-release-heading">
+          New Releases
+        </div>
 
         {newReleasesAreBeingLoaded ? (
           <Loader width={8} />
         ) : (
-          <div className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}>
+          <div
+            className={`songs-${SongLayout.PORTRAIT.toLowerCase()}`}
+            data-testid="new-releases"
+          >
             {newReleases.map((album: Album) => (
               <Song
                 key={album.id}
@@ -170,8 +173,13 @@ const Home: FunctionComponent = () => {
         )}
       </section>
 
-      <section className="search-results">
-        <div className="page-title">Search Results</div>
+      <section
+        className="search-results"
+        data-testid="search-results-container"
+      >
+        <div className="page-title" data-testid="search-results-heading">
+          Search Results
+        </div>
 
         <div className={`songs-${SongLayout.LANDSCAPE.toLowerCase()}`}>
           <div className="search-results__headings">
@@ -179,7 +187,7 @@ const Home: FunctionComponent = () => {
             <div className="search-results__headings--album">Album</div>
             <div className="search-results__headings--duration">Duration</div>
           </div>
-          {/* {searchIsBeingProcessed && <p>Loading...</p>} */}
+
           {searchCameBackEmpty ? (
             <p>No Match Found</p>
           ) : (

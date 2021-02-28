@@ -130,7 +130,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav>
+    <nav data-testid="navbar">
       <ul className="nav-bar">
         <li className="nav-bar__user-profile pointer" role="link">
           <div className="nav-bar__user-profile pointer" onClick={goToHomePage}>
@@ -139,14 +139,22 @@ const NavBar = () => {
               alt="User Avatar"
               className="nav-bar__user-profile--avatar"
               loading="lazy"
+              data-testid="user-avatar"
             />
 
-            <p className="nav-bar__user-profile--username">
+            <p
+              className="nav-bar__user-profile--username"
+              data-testid="user-name"
+            >
               {userProfile.display_name}
             </p>
           </div>
 
-          <p className="nav-bar__link" onClick={goToMyLibrary}>
+          <p
+            className="nav-bar__link"
+            onClick={goToMyLibrary}
+            data-testid="my-library-link"
+          >
             <span>My Library</span>
             <span className="nav-bar__library-count">{librarySize}</span>
           </p>
@@ -166,10 +174,16 @@ const NavBar = () => {
               className="nav-bar__search--input"
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
+              data-testid="search-input"
             />
           </li>
 
-          <li className="nav-bar__logout pointer" onClick={logout} role="link">
+          <li
+            className="nav-bar__logout pointer"
+            onClick={logout}
+            role="link"
+            data-testid="logout-button"
+          >
             <img src={LogoutIcon} alt="Logout Icon" />
           </li>
         </div>

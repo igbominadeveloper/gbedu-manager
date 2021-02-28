@@ -98,11 +98,13 @@ const Song: React.FunctionComponent<SongProps> = ({
   );
 
   return layout === SongLayout.PORTRAIT ? (
-    <div className="song-portrait">
-      <div className="song-portrait__thumbnail">
+    <div className="song-portrait" data-testid="song-portrait">
+      <div className="song-portrait__thumbnail" data-testid="song-thumbnail">
         <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
       </div>
-      <div className="song-portrait__title">{truncate(song.title)}</div>
+      <div className="song-portrait__title" data-testid="song-title">
+        {truncate(song.title)}
+      </div>
 
       {song.type === 'album' ? (
         <div
@@ -114,6 +116,7 @@ const Song: React.FunctionComponent<SongProps> = ({
       ) : (
         <div
           className="song-portrait__action pointer"
+          data-testid="manage-library-button"
           onClick={() => manageLibrary(song)}
         >
           {songHasBeenAddedToLibrary ? 'Remove' : 'Add'}
@@ -121,19 +124,24 @@ const Song: React.FunctionComponent<SongProps> = ({
       )}
     </div>
   ) : (
-    <div className="song-landscape">
+    <div className="song-landscape" data-testid="song-landscape">
       <div className="song-landscape__art-and-title">
-        <div className="song-landscape__thumbnail">
+        <div className="song-landscape__thumbnail" data-testid="song-thumbnail">
           <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
         </div>
-        <div className="song-landscape__title">{song.title}</div>
+        <div className="song-landscape__title" data-testid="song-title">
+          {song.title}
+        </div>
       </div>
-      <div className="song-landscape__album">{song.album}</div>
-      <div className="song-landscape__duration">
+      <div className="song-landscape__album" data-testid="song-album">
+        {song.album}
+      </div>
+      <div className="song-landscape__duration" data-testid="song-duration">
         {minuteAndSeconds(song.duration)}
       </div>
       <div
         className="song-landscape__action pointer"
+        data-testid="manage-library-button"
         onClick={() => manageLibrary(song)}
       >
         {songHasBeenAddedToLibrary ? 'Remove' : 'Add'}
