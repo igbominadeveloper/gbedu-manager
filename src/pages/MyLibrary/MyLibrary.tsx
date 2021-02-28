@@ -86,7 +86,10 @@ const MyLibrary: FunctionComponent = () => {
 
   return (
     <div className="page">
-      <div className="page-title my-library__heading">
+      <div
+        className="page-title my-library__heading"
+        data-testid="my-library-heading"
+      >
         My Library
         {!libraryIsEmpty && (
           <>
@@ -94,6 +97,7 @@ const MyLibrary: FunctionComponent = () => {
               className="export-to-spotify"
               onClick={exportToSpotifyPlaylist}
               disabled={libraryIsBeingExportedToSpotify}
+              data-testid="export-to-spotify"
             >
               <img
                 src={SpotifyIcon}
@@ -105,7 +109,7 @@ const MyLibrary: FunctionComponent = () => {
                 {libraryIsBeingExportedToSpotify && <Loader width={3} />}
               </span>
             </button>
-            <p className="app-info">
+            <p className="app-info" data-testid="my-library-size-info">
               {librarySize > 1 ? `${librarySize} songs` : `${librarySize} song`}
               , {minuteAndSeconds(totalPlaytime, 'string')}
             </p>
@@ -113,17 +117,20 @@ const MyLibrary: FunctionComponent = () => {
         )}
       </div>
 
-      <div className="my-library">
+      <div className="my-library" data-testid="my-library">
         {libraryIsBeingLoaded ? (
           <Loader width={8} />
         ) : libraryIsEmpty ? (
-          <div className="my-library__empty">
+          <div className="my-library__empty" data-testid="empty-library">
             <img
               className="my-library__empty--image"
               src={Empty}
               alt="Empty Library"
             />
-            <p className="page-sub-title my-library__empty--text">
+            <p
+              className="page-sub-title my-library__empty--text"
+              data-testid="empty-library-text"
+            >
               Your Library is empty
             </p>
           </div>
