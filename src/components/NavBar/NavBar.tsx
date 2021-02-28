@@ -130,7 +130,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav>
+    <nav data-testid="navbar">
       <ul className="nav-bar">
         <li className="nav-bar__user-profile pointer" role="link">
           <div className="nav-bar__user-profile pointer" onClick={goToHomePage}>

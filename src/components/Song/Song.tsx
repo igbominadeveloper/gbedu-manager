@@ -98,7 +98,7 @@ const Song: React.FunctionComponent<SongProps> = ({
   );
 
   return layout === SongLayout.PORTRAIT ? (
-    <div className="song-portrait">
+    <div className="song-portrait" data-testid="song-portrait">
       <div className="song-portrait__thumbnail">
         <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
       </div>
@@ -121,7 +121,7 @@ const Song: React.FunctionComponent<SongProps> = ({
       )}
     </div>
   ) : (
-    <div className="song-landscape">
+    <div className="song-landscape" data-testid="song-landscape">
       <div className="song-landscape__art-and-title">
         <div className="song-landscape__thumbnail">
           <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />

@@ -13,6 +13,7 @@ const Login: FunctionComponent = () => {
           redirecUri
         )}&response_type=token&scope=playlist-modify-private,user-read-private,user-read-email,playlist-modify-public`}
         className="login-button"
+        data-testid="login-button"
       >
         Login
       </a>
