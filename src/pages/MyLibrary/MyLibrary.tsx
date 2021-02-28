@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import Song from '../../components/Song/Song';
 import Loader from '../../components/Loader/Loader';
@@ -20,6 +21,8 @@ import {
 
 import * as Services from '../../services';
 
+import { errorHandler, minuteAndSeconds } from '../../utils';
+
 import './MyLibrary.scss';
 
 const MyLibrary: FunctionComponent = () => {
@@ -35,6 +38,16 @@ const MyLibrary: FunctionComponent = () => {
     (state: ReduxState) =>
       state.requestStatus.exportToSpotifyPlaylist === Status.LOADING
   );
+  const librarySize = useSelector(
+    (state: ReduxState) => state.userLibrary.length
+  );
+  const totalPlaytime = useSelector((state: ReduxState) =>
+    state.userLibrary.reduce(
+      (totalMilliseconds: number, currentTrack: SongInterface) =>
+        currentTrack.duration + totalMilliseconds,
+      0
+    )
+  );
 
   const getUserLibrary = useCallback(async () => {
     try {
@@ -44,6 +57,7 @@ const MyLibrary: FunctionComponent = () => {
       dispatch(getUserLibrarySuccess(response));
     } catch (error) {
       dispatch(getUserLibraryError(error.message));
+      toast.error(errorHandler(error.message));
     }
   }, [dispatch]);
 
@@ -59,8 +73,10 @@ const MyLibrary: FunctionComponent = () => {
       );
 
       dispatch(exportToSpotifyPlaylistSuccess());
+      toast.success('Library was exported successfully');
     } catch (error) {
       dispatch(exportToSpotifyPlaylistError(error.message));
+      toast.error(errorHandler(error.message));
     }
   }, [dispatch, library]);
 
@@ -73,21 +89,27 @@ const MyLibrary: FunctionComponent = () => {
       <div className="page-title my-library__heading">
         My Library
         {!libraryIsEmpty && (
-          <button
-            className="export-to-spotify"
-            onClick={exportToSpotifyPlaylist}
-            disabled={libraryIsBeingExportedToSpotify}
-          >
-            <img
-              src={SpotifyIcon}
-              alt="spotify-icon"
-              className="export-to-spotify__image"
-            />
-            Export To Spotify
-            <span className="export-to-spotify__loader">
-              {libraryIsBeingExportedToSpotify && <Loader width={3} />}
-            </span>
-          </button>
+          <>
+            <button
+              className="export-to-spotify"
+              onClick={exportToSpotifyPlaylist}
+              disabled={libraryIsBeingExportedToSpotify}
+            >
+              <img
+                src={SpotifyIcon}
+                alt="spotify-icon"
+                className="export-to-spotify__image"
+              />
+              Export To Spotify
+              <span className="export-to-spotify__loader">
+                {libraryIsBeingExportedToSpotify && <Loader width={3} />}
+              </span>
+            </button>
+            <p className="app-info">
+              {librarySize > 1 ? `${librarySize} songs` : `${librarySize} song`}
+              , {minuteAndSeconds(totalPlaytime, 'string')}
+            </p>
+          </>
         )}
       </div>
 

@@ -1,6 +1,6 @@
 import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { useHistory, useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
   Album,
@@ -28,13 +28,12 @@ import {
 
 import * as Services from '../../services';
 
+import { errorHandler } from '../../utils';
+
 import './Home.scss';
 
 const Home: FunctionComponent = () => {
-  // const [showAlbumTracks, setShowAlbumTracks] = useState(false);
   const dispatch = useDispatch();
-  // const routeMatch = useLocation();
-  // const history = useHistory();
 
   const searchResult = useSelector((state: ReduxState) => state.searchResult);
   const newReleases = useSelector((state: ReduxState) => state.newReleases);
@@ -64,6 +63,7 @@ const Home: FunctionComponent = () => {
 
       dispatch(getNewReleasesSuccess(response.data.albums.items));
     } catch (error) {
+      toast.error(errorHandler(error.message));
       dispatch(getNewReleasesError(error.message));
     }
   }, [dispatch]);
@@ -76,6 +76,7 @@ const Home: FunctionComponent = () => {
 
         dispatch(getUserLibrarySuccess(response));
       } catch (error) {
+        toast.error(errorHandler(error.message));
         dispatch(getUserLibraryError(error.message));
       }
     };
@@ -92,6 +93,7 @@ const Home: FunctionComponent = () => {
           })
         );
       } catch (error) {
+        toast.error(errorHandler(error.message));
         dispatch(getUserLastSearchResultError(error.message));
       }
     };

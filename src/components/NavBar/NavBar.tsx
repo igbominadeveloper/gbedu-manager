@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   getUserProfileSuccess,
@@ -14,7 +15,11 @@ import * as Services from '../../services';
 
 import { ReduxState } from '../../types';
 
-import { convertUserStringToJson, transformSearchResult } from '../../utils';
+import {
+  convertUserStringToJson,
+  errorHandler,
+  transformSearchResult,
+} from '../../utils';
 
 import LogoutIcon from '../../assets/logout.svg';
 import SearchIcon from '../../assets/search.svg';
@@ -99,6 +104,7 @@ const NavBar = () => {
           transformSearchResult(response.data.tracks.items)
         );
       } catch (error) {
+        toast.error(errorHandler(error.message));
         dispatch(searchSongsError(error.message));
       }
     },

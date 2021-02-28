@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 
 // Pages
 import Homepage from './pages/Home/Home';
@@ -53,6 +54,12 @@ const App = () => {
 
   return (
     <Suspense fallback={<Loader />}>
+      <ToastContainer
+        autoClose={3000}
+        style={{ fontSize: '1.5rem' }}
+        limit={1}
+      />
+
       {showNavBar ? <NavBar /> : ''}
 
       <Switch>

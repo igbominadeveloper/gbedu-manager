@@ -1,6 +1,7 @@
 import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   getUserProfileError,
@@ -10,7 +11,7 @@ import {
 
 import * as Services from '../../services';
 
-import { getTokenFromResponse } from '../../utils';
+import { errorHandler, getTokenFromResponse } from '../../utils';
 
 const Authentication: FunctionComponent = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Authentication: FunctionComponent = () => {
       dispatch(getUserProfileSuccess(userProfile));
     } catch (error) {
       dispatch(getUserProfileError(error.message));
+      toast.error(errorHandler(error.message));
     }
   }, [dispatch]);
 
