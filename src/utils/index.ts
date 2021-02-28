@@ -23,7 +23,10 @@ export const truncate = (word: string, maxLength: number = 13): string => {
   return word;
 };
 
-export const minuteAndSeconds = (duration: number): string => {
+export const minuteAndSeconds = (
+  duration: number,
+  format: string = 'number'
+): string => {
   const durationInMinutes = Number(duration / (60 * 1000)).toFixed(2);
   const durationString = String(durationInMinutes).split('.');
 
@@ -31,7 +34,13 @@ export const minuteAndSeconds = (duration: number): string => {
 
   const seconds = Number(Number(`0.${durationString[1]}`) * 60).toFixed(0);
 
-  return `${minutes}:${Number(seconds) < 10 ? 0 + '' + seconds : seconds}`;
+  if (format === 'number') {
+    return `${minutes}:${Number(seconds) < 10 ? 0 + '' + seconds : seconds}`;
+  }
+
+  return `${minutes} min ${
+    Number(seconds) < 10 ? 0 + '' + seconds : seconds
+  } sec`;
 };
 
 export const getTokenFromResponse = (
@@ -53,4 +62,13 @@ export const activeUserProfile = (): SpotifyUser => {
   const userProfileString = localStorage.getItem('auth-user');
 
   return convertUserStringToJson(userProfileString || '');
+};
+
+export const errorHandler = (error: string): string => {
+  // TODO This is a temporary error handler, this cannot scale
+  const networkError = ['Failed to fetch', 'Network Error'];
+  if (networkError.includes(error))
+    return 'The server cannot be reached, please try again later';
+
+  return error;
 };

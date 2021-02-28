@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import Loader from '../Loader/Loader';
 
@@ -17,7 +18,7 @@ import * as Services from '../../services';
 
 import { ReduxState, SongInterface, SongLayout, Status } from '../../types';
 
-import { minuteAndSeconds, truncate } from '../../utils';
+import { errorHandler, minuteAndSeconds, truncate } from '../../utils';
 
 import './Song.scss';
 
@@ -68,6 +69,7 @@ const Song: React.FunctionComponent<SongProps> = ({
         await Services.manageUserLibrary(allFavourites);
       } catch (error) {
         dispatch(manageLibraryError(error.message));
+        toast.error(errorHandler(error.message));
       }
     },
     [dispatch, library, songHasBeenAddedToLibrary]
@@ -89,6 +91,7 @@ const Song: React.FunctionComponent<SongProps> = ({
         dispatch(getAlbumTracksSuccess(response.data.items));
       } catch (error) {
         dispatch(getAlbumTracksError(error.message));
+        toast.error(errorHandler(error.message));
       }
     },
     [dispatch]

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   getUserProfileSuccess,
@@ -14,7 +15,11 @@ import * as Services from '../../services';
 
 import { ReduxState } from '../../types';
 
-import { convertUserStringToJson, transformSearchResult } from '../../utils';
+import {
+  convertUserStringToJson,
+  errorHandler,
+  transformSearchResult,
+} from '../../utils';
 
 import LogoutIcon from '../../assets/logout.svg';
 import SearchIcon from '../../assets/search.svg';
@@ -32,6 +37,10 @@ const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState(userSearchQuery);
 
   const userProfile = useSelector((state: ReduxState) => state.userProfile);
+
+  const librarySize = useSelector(
+    (state: ReduxState) => state.userLibrary.length
+  );
 
   const userProfileImage = userProfile.images[0]?.url;
 
@@ -95,7 +104,8 @@ const NavBar = () => {
           transformSearchResult(response.data.tracks.items)
         );
       } catch (error) {
-        dispatch(searchSongsError(error));
+        toast.error(errorHandler(error.message));
+        dispatch(searchSongsError(error.message));
       }
     },
     [dispatch]
@@ -138,6 +148,7 @@ const NavBar = () => {
 
           <p className="nav-bar__link" onClick={goToMyLibrary}>
             <span>My Library</span>
+            <span className="nav-bar__library-count">{librarySize}</span>
           </p>
         </li>
 

@@ -50,7 +50,13 @@ li {
 body {
   height: 100vh;
   width: 100%;
+
   margin: 0;
+
+  /* TODO implement dark mode later */
+  /* background: var(--color-black);
+  color: var(--color-white); */
+
   font-family: var(--primary-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -96,4 +102,12 @@ img {
 
 .pointer {
   cursor: pointer;
+}
+
+.app-info {
+  padding: 0.5rem 2rem;
+
+  background: var(--color-yellow);
+  border-radius: 10px;
+  font-size: 1.5rem;
 }

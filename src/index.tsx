@@ -7,6 +7,7 @@ import App from './App';
 
 import store from './store';
 
+import 'react-toastify/dist/ReactToastify.min.css';
 import './index.css';
 
 import reportWebVitals from './reportWebVitals';
