@@ -1,6 +1,5 @@
-import React, { Suspense, useEffect, useState } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import React, { Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
 // Pages
@@ -10,63 +9,24 @@ import NotFoundPage from './pages/NotFound';
 import Login from './pages/Login/Login';
 
 //Components
-import NavBar from './components/NavBar/NavBar';
 import Authentication from './components/Authentication/Authentication';
 import Loader from './components/Loader/Loader';
-
-import { convertUserStringToJson } from './utils';
-import { getUserProfileSuccess } from './store/actions';
+import AppLayout from './components/AppLayout/AppLayout';
 
 const App = () => {
-  const location = useLocation();
-  const history = useHistory();
-  const dispatch = useDispatch();
-
-  const [showNavBar, setShowNavBar] = useState(false);
-
-  useEffect(() => {
-    if (
-      location.pathname === '/login' ||
-      location.pathname === '/auth-callback'
-    ) {
-      setShowNavBar(false);
-    } else setShowNavBar(true);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    let authenticatedUser = localStorage.getItem('auth-user');
-
-    if (!token) {
-      history.push('/login');
-      return;
-    }
-
-    if (authenticatedUser) {
-      const hydratedUserObject = convertUserStringToJson(
-        authenticatedUser || ''
-      );
-
-      dispatch(getUserProfileSuccess(hydratedUserObject));
-      return;
-    }
-  }, [dispatch, history]);
-
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<Loader width={3} />}>
       <ToastContainer
         autoClose={3000}
         style={{ fontSize: '1.5rem' }}
         limit={1}
       />
 
-      {showNavBar ? <NavBar /> : ''}
-
       <Switch>
-        <Route exact path="/" component={Homepage} />
-        <Route exact path="/login" component={Login} />
+        <AppLayout exact path="/" component={Homepage} />
         <Route exact path="/auth-callback" component={Authentication} />
-        <Route exact path="/my-library" component={MyLibrary} />
+        <Route exact path="/login" component={Login} />
+        <AppLayout exact path="/my-library" component={MyLibrary} />
         <Route component={NotFoundPage} />
       </Switch>
     </Suspense>

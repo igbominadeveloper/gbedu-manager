@@ -11,7 +11,7 @@ const Login: FunctionComponent = () => {
       <a
         href={`https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
           redirecUri
-        )}&response_type=token&scope=playlist-modify-private,user-read-private,user-read-email,playlist-modify-public`}
+        )}&response_type=token&scope=playlist-modify-private,user-read-private,user-read-email,playlist-modify-public&show_dialog=true`}
         className="login-button"
         data-testid="login-button"
       >
