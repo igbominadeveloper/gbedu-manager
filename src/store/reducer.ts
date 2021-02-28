@@ -45,6 +45,7 @@ const reducer = (
           getUserProfile: Status.LOADING,
         },
         userProfile: { ...DummyUser },
+        error: '',
       };
     }
 
@@ -56,6 +57,7 @@ const reducer = (
           getUserProfile: Status.SUCCESS,
         },
         userProfile: action.payload,
+        error: '',
       };
     }
 
@@ -78,6 +80,7 @@ const reducer = (
           ...state.requestStatus,
           searchSongs: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -89,6 +92,7 @@ const reducer = (
           searchSongs: Status.SUCCESS,
         },
         searchResult: action.payload,
+        error: '',
       };
     }
 
@@ -116,6 +120,7 @@ const reducer = (
           ...state.requestStatus,
           getNewReleases: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -127,6 +132,7 @@ const reducer = (
           getNewReleases: Status.SUCCESS,
         },
         newReleases: action.payload,
+        error: '',
       };
     }
 
@@ -148,6 +154,7 @@ const reducer = (
           ...state.requestStatus,
           getUserLastSearchResult: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -160,6 +167,7 @@ const reducer = (
         },
         searchQuery: action.payload.searchQuery,
         searchResult: action.payload.searchResult || [],
+        error: '',
       };
     }
 
@@ -181,6 +189,7 @@ const reducer = (
           ...state.requestStatus,
           manageLibrary: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -192,6 +201,7 @@ const reducer = (
           manageLibrary: Status.SUCCESS,
         },
         userLibrary: [action.payload].concat(state.userLibrary),
+        error: '',
       };
     }
 
@@ -222,6 +232,7 @@ const reducer = (
           ...state.requestStatus,
           getUserLibrary: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -233,6 +244,7 @@ const reducer = (
           getUserLibrary: Status.SUCCESS,
         },
         userLibrary: action.payload || [],
+        error: '',
       };
     }
 
@@ -254,6 +266,7 @@ const reducer = (
           ...state.requestStatus,
           exportToSpotifyPlaylist: Status.LOADING,
         },
+        error: '',
       };
     }
 
@@ -264,6 +277,7 @@ const reducer = (
           ...state.requestStatus,
           exportToSpotifyPlaylist: Status.SUCCESS,
         },
+        error: '',
       };
     }
 
@@ -286,6 +300,7 @@ const reducer = (
           getAlbumTracks: Status.LOADING,
         },
         activeAlbum: action.payload,
+        error: '',
       };
     }
 
@@ -297,6 +312,7 @@ const reducer = (
           getAlbumTracks: Status.SUCCESS,
         },
         albumTracks: action.payload,
+        error: '',
       };
     }
 

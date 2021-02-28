@@ -1,5 +1,6 @@
 import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// import { useHistory, useLocation } from 'react-router-dom';
 
 import {
   Album,
@@ -17,6 +18,9 @@ import {
   getNewReleasesError,
   getNewReleasesRequestLoading,
   getNewReleasesSuccess,
+  getUserLastSearchResultError,
+  getUserLastSearchResultRequestLoading,
+  getUserLastSearchResultSuccess,
   getUserLibraryError,
   getUserLibraryRequestLoading,
   getUserLibrarySuccess,
@@ -29,6 +33,9 @@ import './Home.scss';
 const Home: FunctionComponent = () => {
   // const [showAlbumTracks, setShowAlbumTracks] = useState(false);
   const dispatch = useDispatch();
+  // const routeMatch = useLocation();
+  // const history = useHistory();
+
   const searchResult = useSelector((state: ReduxState) => state.searchResult);
   const newReleases = useSelector((state: ReduxState) => state.newReleases);
   const searchCameBackEmpty = useSelector((state: ReduxState) => {
@@ -57,29 +64,44 @@ const Home: FunctionComponent = () => {
 
       dispatch(getNewReleasesSuccess(response.data.albums.items));
     } catch (error) {
-      console.log(error.message);
-
       dispatch(getNewReleasesError(error));
     }
   }, [dispatch]);
 
-  const getUserLibrary = useCallback(async () => {
-    try {
-      dispatch(getUserLibraryRequestLoading());
-      const response = await Services.getUserLibrary();
-
-      dispatch(getUserLibrarySuccess(response));
-    } catch (error) {
-      console.log(error.message);
-
-      dispatch(getUserLibraryError(error));
-    }
-  }, [dispatch]);
-
   useEffect(() => {
+    const getUserLibrary = async () => {
+      try {
+        dispatch(getUserLibraryRequestLoading());
+        const response = await Services.getUserLibrary();
+
+        dispatch(getUserLibrarySuccess(response));
+      } catch (error) {
+        dispatch(getUserLibraryError(error));
+      }
+    };
+
+    const getUserLastSearchResult = async () => {
+      try {
+        dispatch(getUserLastSearchResultRequestLoading());
+        const response = await Services.getUserLastSearchResult();
+
+        dispatch(
+          getUserLastSearchResultSuccess({
+            searchQuery: response.searchQuery,
+            searchResult: response.searchResult,
+          })
+        );
+      } catch (error) {
+        dispatch(getUserLastSearchResultError(error.message));
+      }
+    };
+
     getUserLibrary();
     getNewReleases();
-  }, [getNewReleases, getUserLibrary]);
+    getUserLastSearchResult();
+
+    return () => {};
+  }, [getNewReleases, dispatch]);
 
   return (
     <div className="home page">

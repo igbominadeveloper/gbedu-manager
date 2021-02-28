@@ -43,12 +43,13 @@ export const storeUserLastSearchQuery = (
   });
 };
 
-export const getUserLastSearchResult = () => {
+export const getUserLastSearchResult = async () => {
   const userProfile = activeUserProfile();
 
-  return fetch(`${firebaseUrl}/${userProfile.id}/search.json`, {
+  const response = await fetch(`${firebaseUrl}/${userProfile.id}/search.json`, {
     method: 'get',
-  }).then((response) => response.json());
+  });
+  return await response.json();
 };
 
 export const manageUserLibrary = (songs: Array<SongInterface>) => {
@@ -60,10 +61,14 @@ export const manageUserLibrary = (songs: Array<SongInterface>) => {
   });
 };
 
-export const getUserLibrary = () => {
+export const getUserLibrary = async () => {
   const userProfile = activeUserProfile();
 
-  return fetch(`${firebaseUrl}/${userProfile.id}/favourites.json`, {
-    method: 'get',
-  }).then((response) => response.json());
+  const response = await fetch(
+    `${firebaseUrl}/${userProfile.id}/favourites.json`,
+    {
+      method: 'get',
+    }
+  );
+  return await response.json();
 };

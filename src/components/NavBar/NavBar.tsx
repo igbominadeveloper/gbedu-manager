@@ -3,9 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-  getUserLastSearchResultError,
-  getUserLastSearchResultRequestLoading,
-  getUserLastSearchResultSuccess,
+  getUserProfileSuccess,
   logoutUser,
   searchSongsError,
   searchSongsRequestLoading,
@@ -16,7 +14,7 @@ import * as Services from '../../services';
 
 import { ReduxState } from '../../types';
 
-import { transformSearchResult } from '../../utils';
+import { convertUserStringToJson, transformSearchResult } from '../../utils';
 
 import LogoutIcon from '../../assets/logout.svg';
 import SearchIcon from '../../assets/search.svg';
@@ -38,10 +36,31 @@ const NavBar = () => {
   const userProfileImage = userProfile.images[0]?.url;
 
   const goToHomePage = () => history.push('/');
+
   const goToLoginPage = useCallback(() => {
     history.push('/login');
   }, [history]);
+
   const goToMyLibrary = () => history.push('/my-library');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    let authenticatedUser = localStorage.getItem('auth-user');
+
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+
+    if (authenticatedUser) {
+      const hydratedUserObject = convertUserStringToJson(
+        authenticatedUser || ''
+      );
+
+      dispatch(getUserProfileSuccess(hydratedUserObject));
+      return;
+    }
+  }, [dispatch, history]);
 
   useEffect(() => {
     const expirationTime = localStorage.getItem('expires_in');
@@ -53,29 +72,11 @@ const NavBar = () => {
     }
   }, [goToLoginPage]);
 
-  const getUserLastSearchResult = useCallback(async () => {
-    try {
-      dispatch(getUserLastSearchResultRequestLoading());
-      const response = await Services.getUserLastSearchResult();
-
-      dispatch(
-        getUserLastSearchResultSuccess({
-          searchQuery: response.searchQuery,
-          searchResult: response.searchResult,
-        })
-      );
-
-      setSearchQuery(response.searchQuery);
-    } catch (error) {
-      console.log(error);
-
-      dispatch(getUserLastSearchResultError(error.message));
-    }
-  }, [dispatch]);
-
   useEffect(() => {
-    getUserLastSearchResult();
-  }, [getUserLastSearchResult]);
+    if (userSearchQuery.length > 0) {
+      setSearchQuery(userSearchQuery);
+    }
+  }, [userSearchQuery]);
 
   const performSongSearch = useCallback(
     async (searchParameter: string) => {

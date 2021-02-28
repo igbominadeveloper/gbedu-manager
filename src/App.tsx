@@ -11,29 +11,26 @@ import Login from './pages/Login/Login';
 //Components
 import NavBar from './components/NavBar/NavBar';
 import Authentication from './components/Authentication/Authentication';
+import Loader from './components/Loader/Loader';
+
 import { convertUserStringToJson } from './utils';
 import { getUserProfileSuccess } from './store/actions';
 
 const App = () => {
-  const routeMatch = useLocation();
+  const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [showNavBar, setShowNavBar] = useState(true);
+  const [showNavBar, setShowNavBar] = useState(false);
 
   useEffect(() => {
     if (
-      routeMatch.pathname === '/login' ||
-      routeMatch.pathname === '/auth-callback'
+      location.pathname === '/login' ||
+      location.pathname === '/auth-callback'
     ) {
       setShowNavBar(false);
-      return;
-    }
-
-    setShowNavBar(true);
-
-    return () => setShowNavBar(true);
-  }, [routeMatch.pathname]);
+    } else setShowNavBar(true);
+  }, [location.pathname]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -55,8 +52,8 @@ const App = () => {
   }, [dispatch, history]);
 
   return (
-    <Suspense fallback={<div>Loading....</div>}>
-      {showNavBar && <NavBar />}
+    <Suspense fallback={<Loader />}>
+      {showNavBar ? <NavBar /> : ''}
 
       <Switch>
         <Route exact path="/" component={Homepage} />
