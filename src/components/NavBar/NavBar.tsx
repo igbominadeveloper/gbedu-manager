@@ -23,7 +23,7 @@ import {
 
 import LogoutIcon from '../../assets/logout.svg';
 import SearchIcon from '../../assets/search.svg';
-import Avatar from '../../assets/avatar.svg';
+import DefaultAvatar from '../../assets/avatar.svg';
 
 import './NavBar.scss';
 
@@ -135,7 +135,7 @@ const NavBar = () => {
         <li className="nav-bar__user-profile pointer" role="link">
           <div className="nav-bar__user-profile pointer" onClick={goToHomePage}>
             <img
-              src={userProfileImage || Avatar}
+              src={userProfileImage || DefaultAvatar}
               alt="User Avatar"
               className="nav-bar__user-profile--avatar"
               loading="lazy"
