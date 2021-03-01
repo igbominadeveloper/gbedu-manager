@@ -130,11 +130,11 @@ const Song: React.FunctionComponent<SongProps> = ({
           <img src={song.thumbnail} alt={`${song.title}`} loading="lazy" />
         </div>
         <div className="song-landscape__title" data-testid="song-title">
-          {song.title}
+          {truncate(song.title, 25)}
         </div>
       </div>
       <div className="song-landscape__album" data-testid="song-album">
-        {song.album}
+        {truncate(song.album, 20)}
       </div>
       <div className="song-landscape__duration" data-testid="song-duration">
         {minuteAndSeconds(song.duration)}
